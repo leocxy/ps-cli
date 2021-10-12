@@ -1,0 +1,47 @@
+{
+    "name": "@leocxy/slate",
+    "version": "0.14.1",
+    "description": "Old Slate CLI tools",
+    "main": "src/index.mjs",
+    "type": "commonjs",
+    "bin": {
+        "slate": "dist/index.mjs",
+        "slate-debug": "src/index.mjs"
+    },
+    "author": "Leo Chen <leo.cxy88@gmail.com>",
+    "license": "MIT",
+    "engineStrict": true,
+    "engines": {
+        "node": "^14.17.0 || >=16.0.0",
+        "yarn": "1.x"
+    },
+    "keywords": [
+        "shopify",
+        "slate",
+        "themekit"
+    ],
+    "devDependencies": {
+        "@babel/cli": "^7.15.7",
+        "@babel/core": "^7.15.8",
+        "eslint": "^8.0.0",
+        "eslint-plugin-node": "^11.1.0"
+    },
+    "dependencies": {
+        "chalk": "^4.1.2",
+        "commander": "^8.2.0",
+        "cross-spawn": "^7.0.3",
+        "enquirer": "^2.3.6",
+        "figures": "^4.0.0",
+        "find-root": "^1.1.0",
+        "mv": "^2.1.1",
+        "rimraf": "^3.0.2",
+        "unzip2": "^0.2.5",
+        "update-notifier": "^5.1.0"
+    },
+    "scripts": {
+        "clean": "yarn rimraf dist/",
+        "lint": "yarn eslint --max-warnings 0 src/",
+        "serve": "yarn clean && yarn babel -w -d dist/ src/",
+        "build": "yarn clean && yarn babel -d dist/ src/"
+    }
+}
