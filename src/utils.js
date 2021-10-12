@@ -1,6 +1,17 @@
 const {join, normalize, resolve} = require('path')
-const {existsSync, writeFileSync, readFileSync} = require('fs')
+const {existsSync, writeFileSync, readFileSync, createWriteStream, unlinkSync, createReadStream} = require('fs')
+const {Extract} = require('unzip-stream')
 const mv = require('mv')
+const { get } = require('http')
+const findRoot = require('find-root')
+
+const currentDirectory = __dirname,
+workingDirectory = process.cwd(),
+themeRoot = findRoot(workingDirectory),
+defualtGulpPath = join(themeRoot, normalize('node_modules/.bin/gulp')),
+legacyGulpPath = join(themeRoot, normalize('node_modules/@leocxy/slate/node_modules/.bin/gulp'));
+
+
 
 module.exports = {
     /**
@@ -21,7 +32,21 @@ module.exports = {
     writePackageJsonSync: (target, name = 'theme') => {
         writeFileSync(target, JSON.stringify({
             name,
-            version: '0.1.0'
+            version: '0.1.0',
+            engineStrict: true,
+            engines: {
+                node: "^14.17.0 || >=16.0.0",
+                yarn: "1.x"
+            },
+            resolutions: {
+                "graceful-fs": "^4.2.4"
+            },
+            scripts: {
+                clean: "yarn rimraf dist/",
+                watch: "yarn slate watch -e",
+                build: "yarn slate build",
+                deploy: "yarn clean && yarn build"
+            }
         }, null, 4))
     },
     /**
@@ -67,5 +92,68 @@ module.exports = {
      * @param {string} file - The path to the file.
      */
      isShopifyThemeSettingsFile: (file) => /^settings_.+\.json/.test(file),
-     
+    /**
+     * Download file from url and write to target.
+     *
+     * @param {string} source - The url to the file to download.
+     * @param {string} target - The path to the file destination.
+     *
+     * @return {string} - The path to the file destination.
+     */
+     downloadFromUrl: (source, target) => {
+        return new Promise((resolve, reject) => {
+            const targetFile = createWriteStream(target)
+
+            targetFile.on('open', () => {
+                get(source, (response) => {
+                    response.pipe(targetFile)
+                })
+            })
+
+            targetFile.on('error', (err) => {
+                unlinkSync(target)
+                reject(err)
+            })
+
+            targetFile.on('close', () => resolve(target))
+        })
+     },
+     /**
+     * Extract zip file to target and unlink zip file.
+     *
+     * @param {string} source - The path to the zip file.
+     * @param {string} target - The path to the unzip destination.
+     */
+    unzip: (source, target) => {
+        return new Promise((resolve, reject) => {
+            const zipFile = createReadStream(source)
+
+            zipFile.on('error', (err) => reject(err))
+
+            zipFile.on('close', () => {
+                unlinkSync(source)
+                resolve(target)
+            })
+
+            zipFile.pipe(Extract({ path: target }))
+        })
+    },
+    /**
+     * Find closest package.json to be at root of theme.
+     *
+     * @param {string} directory - A path.
+     */
+    getThemeRoot: (directory) => {
+        try {
+            return normalize(findRoot(directory))
+        } catch (err) {
+            return null
+        }
+    },
+}
+
+module.exports.config = {
+    currentDirectory, workingDirectory, themeRoot, 
+    gulpFile: join(currentDirectory, 'gulpfile.js'),
+    gulp: existsSync(defualtGulpPath) ? defualtGulpPath : legacyGulpPath
 }

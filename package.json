@@ -1,9 +1,9 @@
 {
     "name": "@leocxy/slate",
     "version": "0.14.1",
-    "description": "Old Slate CLI tools",
-    "main": "src/index.mjs",
+    "description": "Second-development for Slate CLI tools",
     "type": "commonjs",
+    "main": "dist/index.mjs",
     "bin": {
         "slate": "dist/index.mjs",
         "slate-debug": "src/index.mjs"
@@ -35,13 +35,13 @@
         "find-root": "^1.1.0",
         "mv": "^2.1.1",
         "rimraf": "^3.0.2",
-        "unzip2": "^0.2.5",
+        "unzip-stream": "^0.3.1",
         "update-notifier": "^5.1.0"
     },
     "scripts": {
         "clean": "yarn rimraf dist/",
         "lint": "yarn eslint --max-warnings 0 src/",
         "serve": "yarn clean && yarn babel -w -d dist/ src/",
-        "build": "yarn clean && yarn babel -d dist/ src/"
+        "build": "yarn clean && yarn babel -d dist/ src/ -x .js && yarn babel -d dist/ src/ -x .mjs --out-file-extension .mjs"
     }
 }

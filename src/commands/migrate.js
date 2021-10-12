@@ -68,23 +68,30 @@ module.exports = (cli, figures) => {
 
             try {
                 await Promise.all(movePromises)
-                
+
                 log(`  ${chalk.green(figures.tick)} Migration to src/ completed\n`)
 
                 await Promise.all(unminifyPromises)
 
                 // @todo install dependencies
+                log(chalk.bgRed(`@todo install the dependence using ${options.npm}`))
+                // log(`\n  ${chalk.green(figures.tick)} Slate dependencies installed\n`)
 
+                // generate config.yml
+                if (!existsSync(configYml)) {
+                    await utils.downloadFromUrl(
+                        'https://raw.githubusercontent.com/Shopify/slate/0.x/packages/slate-theme/config-sample.yml',
+                        configYml
+                    )
 
+                    log(`  ${chalk.green(figures.tick)} Configuration file generated`)
+                    log(chalk.yellowBright('  Your theme was missing config.yml in the root directory. Please open and edit it before using Slate commands\n'))
+                }
 
-
+                log(`  ${chalk.green(figures.tick)} Migration complete!\n`)
             } catch (err) {
                 log(chalk.yellowBright(`\n  ${err}\n`))
                 log(chalk.redBright(`  ${figures.cross} Migration failed. Please check src/ directory\n`))
             }
-
-            // @todo icon svg
-            // icon-xxxx.liquid
-            // @todo setting file
         })
 }
