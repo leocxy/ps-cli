@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// eslint-disable-next-line node/shebang
 import {readFileSync} from 'fs'
 import {join, normalize} from 'path'
 import chalk from 'chalk'

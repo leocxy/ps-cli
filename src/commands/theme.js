@@ -1,9 +1,7 @@
 const {existsSync, mkdirSync} = require('fs')
 const { join } = require('path')
 const { prompt } = require('enquirer')
-const chalk = require('chalk')
-const log = console.log
-const utils = require('../utils')
+const { logger, downloadFromUrl, writePackageJsonSync, unzip } = require('../utils')
 
 module.exports = (cli, figures) => {
     cli.command('theme [name]')
@@ -30,22 +28,23 @@ module.exports = (cli, figures) => {
             const s3Url = 'http://sdks.shopifycdn.com/slate/latest/slate-src.zip';
             const root = join(workingDirectory, dirName);
 
-            if (existsSync(root)) return log(chalk.redBright(`  ${figures.cross} The ${root} directory already exists`))
+            if (existsSync(root)) return logger.error(`The ${root} directory already exists`, figures.cross)
 
-            log('  this may take some time...\n')
+            logger.info('this may take some time...\n')
 
             mkdirSync(root)
 
-            return utils.downloadFromUrl(s3Url, join(root, 'starter-theme.zip'))
-                .then((file) => utils.unzip(file, root))
+            return downloadFromUrl(s3Url, join(root, 'starter-theme.zip'))
+                .then((file) => unzip(file, root))
                 .then(() => {
-                    log(`  ${chalk.green(figures.tick)} starter-theme download completed\n`)
+                    logger.success('starter-theme download completed\n', figures.tick)
                     // generate package.json file
                     const pkg = join(root, 'package.json')
-                    utils.writePackageJsonSync(pkg, dirName)
+                    writePackageJsonSync(pkg, dirName)
 
                     // @todo install dependencies
-                    log('Install the packages', options.npm)
+                    logger.info('Install the packages')
+                    logger.info(options.npm)
                 })
         })
 }

@@ -1,9 +1,8 @@
-const chalk = require('chalk')
 const { Confirm } = require('enquirer')
 const utils = require('../utils')
 const {join} = require('path')
 const { existsSync, mkdirSync, readdirSync } = require('fs')
-const log = console.log
+const logger = utils.logger
 
 
 module.exports = (cli, figures) => {
@@ -13,36 +12,36 @@ module.exports = (cli, figures) => {
         .action(async (options = {}) => {
             const workingDirectory = process.cwd()
             let answer = await new Confirm({
-                message: "  Warning! This will change your theme's folder structure. Are you sure you want to proceed?"
+                message: "Warning! This will change your theme's folder structure. Are you sure you want to proceed?"
             }).run()
 
             if (!answer) return
 
             // check project structure
             if (!utils.isShopifyTheme(workingDirectory)) {
-                log(chalk.yellowBright("  The current directory doesn't have /layout/theme.liquid. We have to assume this isn't a Shopify theme\n"))
-                log(chalk.redBright(`  ${figures.cross} Migration failed\n`))
+                logger.warming("The current directory doesn't have /layout/theme.liquid. We have to assume this isn't a Shopify theme\n")
+                logger.error('Migration failed\n', figures.cross)
                 return
             }
 
             const configYml = join(workingDirectory, 'config.yml')
             const pkgJson = join(workingDirectory, 'package.json')
             const srcDir = join(workingDirectory, 'src')
-            const configDir = join(workingDirectory, 'src/config')
+            const configDir = join(workingDirectory, 'src', 'config')
             const iconsDir = join(srcDir, 'icons')
             const stylesDir = join(srcDir, 'styles')
             const scriptsDir = join(srcDir, 'scripts')
 
             console.log(`\n  ${figures.tick} Your theme is a valid Shopify theme \n`)
             if (existsSync(srcDir)) {
-                log(chalk.yellowBright('  Migrate task could not create a new src directory since your already has one\n'))
-                log(chalk.yellowBright('  Please remove or rename your current src directory\n'))
-                log(chalk.redBright(`  ${figures.cross} Migration failed\n`))
+                logger.warming('Migrate task could not create a new src directory since your already has one\n')
+                logger.warming('Please remove or rename your current src directory\n')
+                logger.error('Migration failed\n', figures.cross)
                 return
             }
 
-            log(`  ${chalk.green(figures.tick)} Migration checks completed\n`)
-            log(chalk.whiteBright('  Starting migration...\n'));
+            logger.success('Migration checks completed\n', figures.tick)
+            logger.info('Starting migration...\n')
 
             mkdirSync(srcDir)
             mkdirSync(iconsDir)
@@ -52,29 +51,28 @@ module.exports = (cli, figures) => {
             // @todo write package json
             if (!existsSync(pkgJson)) utils.writePackageJsonSync(pkgJson)
 
+            // Move
             const movePromiseFactory = (file) => {
-                log(`  Migrating ${file} to src/...`)
+                logger.info(`Migrating ${file} to src/...`)
                 return utils.move(join(workingDirectory, file), join(srcDir, file))
             }
 
-            let files = readdirSync(workingDirectory)
-            const movePromises = files.filter(utils.isShpoifyThemeWhitelistDir).map(movePromiseFactory)
-
-
+            // unminify JSON
             const unminifyJsonPromiseFactory = (file) => utils.unminifyJson(join(configDir, file));
 
-            const configDirFiels = readdirSync(configDir)
-            const unminifyPromises = configDirFiels.filter(utils.isShopifyThemeSettingsFile).map(unminifyJsonPromiseFactory)
-
             try {
+                let files = readdirSync(workingDirectory)
+                const movePromises = files.filter(utils.isShpoifyThemeWhitelistDir).map(movePromiseFactory)
                 await Promise.all(movePromises)
-
-                log(`  ${chalk.green(figures.tick)} Migration to src/ completed\n`)
-
+                
+                logger.success('Migration to src/ completed\n', figures.tick)
+                
+                const configDirFiles = readdirSync(configDir).filter(utils.isShopifyThemeSettingsFile)
+                const unminifyPromises = configDirFiles.map(unminifyJsonPromiseFactory)
                 await Promise.all(unminifyPromises)
 
                 // @todo install dependencies
-                log(chalk.bgRed(`@todo install the dependence using ${options.npm}`))
+                logger.info(`@todo install the dependence using ${options.npm}`)
                 // log(`\n  ${chalk.green(figures.tick)} Slate dependencies installed\n`)
 
                 // generate config.yml
@@ -84,14 +82,14 @@ module.exports = (cli, figures) => {
                         configYml
                     )
 
-                    log(`  ${chalk.green(figures.tick)} Configuration file generated`)
-                    log(chalk.yellowBright('  Your theme was missing config.yml in the root directory. Please open and edit it before using Slate commands\n'))
+                    logger.success('Configuration file generated', figures.tick)
+                    logger.warming('Your theme was missing config.yml in the root directory. Please open and edit it before using Slate commands\n')
                 }
 
-                log(`  ${chalk.green(figures.tick)} Migration complete!\n`)
+                logger.success('Migration complete!\n', figures.tick)
             } catch (err) {
-                log(chalk.yellowBright(`\n  ${err}\n`))
-                log(chalk.redBright(`  ${figures.cross} Migration failed. Please check src/ directory\n`))
+                logger.warming(`${err}`)
+                logger.error('Migration failed. Please check src/ directory\n', figures.cross)
             }
         })
 }

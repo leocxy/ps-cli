@@ -4,13 +4,28 @@ const {Extract} = require('unzip-stream')
 const mv = require('mv')
 const { get } = require('http')
 const findRoot = require('find-root')
+const log = require('fancy-log')
+const chalk = require('chalk')
+const currentDirectory = __dirname
+const workingDirectory = process.cwd()
+const themeRoot = findRoot(workingDirectory)
+const defualtGulpPath = join(themeRoot, normalize('node_modules/.bin/gulp'))
+const legacyGulpPath = join(themeRoot, normalize('node_modules/@leocxy/slate/node_modules/.bin/gulp'))
 
-const currentDirectory = __dirname,
-workingDirectory = process.cwd(),
-themeRoot = findRoot(workingDirectory),
-defualtGulpPath = join(themeRoot, normalize('node_modules/.bin/gulp')),
-legacyGulpPath = join(themeRoot, normalize('node_modules/@leocxy/slate/node_modules/.bin/gulp'));
-
+/**
+ * Separates filename and directory from a path string. Returns an object containing both.
+ *
+ * @param path {String} - a string representing the path to a file
+ * @returns {Object} - an object with separated `file` (the filename) and `dir` (path minus filename) properties
+ * @private
+ */
+const separatePath = (path) => {
+    let tmp = path.split('/')
+    return {
+        file: tmp.pop(),
+        dir: tmp.join('/')
+    }
+}
 
 
 module.exports = {
@@ -150,10 +165,47 @@ module.exports = {
             return null
         }
     },
+    /**
+     * Fancy logger
+     */
+    logger: {
+        info: (msg, symbol = null) => {
+            msg = (symbol ? symbol + ' ' : '') + msg
+            log(`  ${chalk.whiteBright(msg)}`)
+        },
+        success: (msg, symbol = null) => {
+            msg = (symbol ? symbol + ' ' : '') + msg
+            log(`  ${chalk.greenBright(msg)}`)
+        },
+        warming: (msg, symbol = null) => {
+            msg = (symbol ? symbol + ' ' : '') + msg
+            log(`  ${chalk.yellowBright(msg)}`)
+        },
+        error: (msg, symbol = null) => {
+            msg = (symbol ? symbol + ' ' : '') + msg
+            log(`  ${chalk.redBright(msg)}`)
+        },
+        fileEvent: (event, path) => {
+            const pathObj = separatePath(path)
+            log('change in', chalk.magenta(pathObj.dir), chalk.white('-'), chalk.cyan(event), chalk.yellow(pathObj.file))
+        },
+        configError: () => {
+            log('File missing:', chalk.yellow('`config.yml` does not exist. You need to add a config file before you can make changes to your Shopify store.'))
+        },
+        invalidThemeId: (themeId, env) => {
+            log('Invalid theme id for', chalk.cyan(`Environment[${env}]:${themeId}`), chalk.yellow('`theme_id` must be an integer or "live".'))
+        },
+        processFiles: (processName) => {
+            log('running task', chalk.white('-'), chalk.cyan(processName))
+        },
+        plumberErrorHandle: (err) => {
+            log(chalk.red(err))
+        }
+    }
 }
 
 module.exports.config = {
-    currentDirectory, workingDirectory, themeRoot, 
-    gulpFile: join(currentDirectory, 'gulpfile.js'),
+    currentDirectory, workingDirectory, themeRoot,
+    gulpFile: join(currentDirectory, './tasks/index.js'),
     gulp: existsSync(defualtGulpPath) ? defualtGulpPath : legacyGulpPath
 }
