@@ -1,14 +1,18 @@
-const { config } = require('../utils')
-const { join } = require('path')
-const { existsSync } = require('fs')
-const pkg = require(join(config.themeRoot, 'package.json'))
-const { merge } = require('webpack-merge')
+import { config } from '../utils.js'
+import { join } from 'path'
+import { existsSync, readFileSync } from 'fs'
+import { merge } from 'webpack-merge'
+import yargs from "yargs"
+import { hideBin } from 'yargs/helpers'
+const pkg = readFileSync(join(config.themeRoot, 'package.json'))
+const argv = yargs(hideBin(process.argv)).argv
+
 /**
  * common configuration
- * 
+ *
  *  @prop {String} packageJson - path to package.json file
  *  @prop {String} themeRoot - path to working directory
- *  @prop {String} tkconfig - path to themekit config file
+ *  @prop {String} tkConfig - path to themeKit config file
  *  @prop {Object} dist - paths to relevant folder locations in the distributable directory
  */
 let commonConfig = {
@@ -38,7 +42,7 @@ let commonConfig = {
  *   .something(else);
  * ```
  *
- * @namespace salteConfig
+ * @namespace slateConfig
  * @memberof slate-cli
  * @summary Configuring slate-cli
  *  @prop {String} environment - development | staging | production
@@ -50,6 +54,13 @@ let commonConfig = {
  */
 let slateConfig = {
     deployLog: join(config.themeRoot, 'deploy.log'),
+    env: argv['env'],
+    ignoreFiles: [],
+    theme_id: null,
+    store: null,
+    password: null,
+    fn: {},
+    cwd: argv['cwd'],
     src: {
         root: 'src/',
         js: 'src/scripts/**/*.{js,js.liquid}',
@@ -60,12 +71,12 @@ let slateConfig = {
         vendorCss: 'src/styles/vendor/*.{css,scss}',
         assets: 'src/assets/**/*',
         icons: 'src/icons/**/*.svg',
-        templates: 'src/templates/**/*',
-        snippets: 'src/snippets/*',
-        sections: 'src/sections/*',
-        locales: 'src/locales/*',
-        config: 'src/config/*',
-        layout: 'src/layout/*',
+        templates: 'src/templates/**/*.{liquid,json}',
+        snippets: 'src/snippets/*.liquid',
+        sections: 'src/sections/*.liquid',
+        locales: 'src/locales/*.json',
+        config: 'src/config/*.json',
+        layout: 'src/layout/*.liquid',
     },
     roots: {
         js: 'src/scripts/*.{js,js.liquid}',
@@ -73,22 +84,24 @@ let slateConfig = {
         css: 'src/styles/*.{css,scss}'
     },
     plugins: {
-        svgmin: {
-            plugins: []
+        svgMin: {multipass: true},
+        babel: ['@babel/transform-runtime'],
+        uglify: {
+            theme: {},
+            vendor: {
+                mangle: true,
+                compress: true,
+                output: { comments: 'some' }
+            }
         }
     }
 }
 const slateConfigJS = join(config.themeRoot, 'slate.config.js')
 if (existsSync(slateConfigJS)) {
-    slateConfig = merge(slateConfig, require(slateConfigJS))
+    slateConfig = merge(slateConfig, readFileSync(slateConfigJS))
 }
 
-module.exports = {
-    // common
+export {
     commonConfig,
-    // slate
-    slateConfig,
-    // webpack
-
-    // packer
+    slateConfig
 }

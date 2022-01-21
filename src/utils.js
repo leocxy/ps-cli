@@ -2,16 +2,17 @@ import {join, normalize, resolve, dirname} from 'path'
 import {existsSync, writeFileSync, readFileSync, createWriteStream, unlinkSync, createReadStream} from 'fs'
 import {Extract} from 'unzip-stream'
 import mv from 'mv'
-import { get } from 'http'
+import {get} from 'http'
 import findRoot from 'find-root'
 import log from 'fancy-log'
 import chalk from 'chalk'
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url'
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const currentDirectory = __dirname
 const workingDirectory = process.cwd()
 const themeRoot = findRoot(workingDirectory)
-const defualtGulpPath = join(themeRoot, normalize('node_modules/.bin/gulp'))
+const defaultGulpPath = join(themeRoot, normalize('node_modules/.bin/gulp'))
 const legacyGulpPath = join(themeRoot, normalize('node_modules/@leocxy/slate/node_modules/.bin/gulp'))
 
 /**
@@ -32,7 +33,7 @@ const separatePath = (path) => {
 /**
  * Tests if directory is a Shopify theme
  *
- * @param {string} directory - The path to the directory.
+ * @param {string} dir - The path to the directory.
  */
 const isShopifyTheme = (dir) => {
     const layoutFile = join(dir, normalize('layout/theme.liquid'))
@@ -45,7 +46,7 @@ const isShopifyTheme = (dir) => {
  * @param {string} target - The path to the target package.json.
  * @param {string} name - The name of the theme.
  */
- const writePackageJsonSync = (target, name = 'theme') => {
+const writePackageJsonSync = (target, name = 'theme') => {
     writeFileSync(target, JSON.stringify({
         name,
         version: '0.1.0',
@@ -86,17 +87,17 @@ const move = (oldPath, newPath) => {
  *
  * @param {string} directory - The path to the directory.
  */
-const isShpoifyThemeWhitelistDir = (directory) => {
+const isShopifyThemeWhitelistDir = (directory) => {
     return ['assets', 'layout', 'config', 'locales', 'sections', 'snippets', 'templates'].indexOf(directory) !== -1
 }
 
 
 /**
- * Umminify a JSON file
+ * beautify a JSON file
  *
  * @param {string} file - The path to the file to unminify
  */
-const unminifyJson = (file) => new Promise((resolve, reject) => {
+const beautifyJson = (file) => new Promise((resolve, reject) => {
     try {
         const jsonString = readFileSync(file)
         const unminifyJsonString = JSON.stringify(JSON.parse(jsonString), null, 4)
@@ -159,7 +160,7 @@ const unzip = (source, target) => {
             resolve(target)
         })
 
-        zipFile.pipe(Extract({ path: target }))
+        zipFile.pipe(Extract({path: target}))
     })
 }
 
@@ -211,8 +212,29 @@ const logger = {
     },
     plumberErrorHandle: (err) => {
         log(chalk.red(err))
+    },
+    logTransferDone: () => {
+        log('Transfer Complete:', chalk.green('File changes successfully synced to store'))
+    },
+    logChildProcess: (cmd) => {
+        log('running task', chalk.bold('[child process]'), chalk.white('-'), chalk.cyan('theme', cmd));
+    },
+    logDeploysSuccess: (cmd, files) => {
+        let timestamp = `Deploy complete @ ${new Date()}. `
+        let action = cmd === 'deploy' ? 'added/changed ' : 'removed '
+        let number = `${files.length} file(s): `
+        let fileList = `${files.join(', ')} \n`
+        return timestamp + action + number + fileList
+    },
+    logDeployErrors: (cmd, files, err) => {
+        let timestamp = `Deploy error @ ${new Date()}. `
+        let action = cmd === 'deploy' ? 'added/changed ' : 'removed '
+        let number = `${files.length} file(s): `
+        let fileList = `${files.join(', ')} \n`
+        return timestamp + action + number + fileList + err + ' \n';
     }
 }
+
 
 /**
  * Get configs
@@ -224,15 +246,15 @@ const config = {
     workingDirectory,
     themeRoot,
     gulpFile: join(currentDirectory, './tasks/index.js'),
-    gulp: existsSync(defualtGulpPath) ? defualtGulpPath : legacyGulpPath
+    gulp: existsSync(defaultGulpPath) ? defaultGulpPath : legacyGulpPath,
 }
 
 export {
     isShopifyTheme,
     writePackageJsonSync,
     move,
-    isShpoifyThemeWhitelistDir,
-    unminifyJson,
+    isShopifyThemeWhitelistDir,
+    beautifyJson,
     isShopifyThemeSettingsFile,
     downloadFromUrl,
     unzip,
@@ -246,8 +268,8 @@ export default {
     isShopifyTheme,
     writePackageJsonSync,
     move,
-    isShpoifyThemeWhitelistDir,
-    unminifyJson,
+    isShopifyThemeWhitelistDir,
+    beautifyJson,
     isShopifyThemeSettingsFile,
     downloadFromUrl,
     unzip,

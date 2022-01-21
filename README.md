@@ -1,28 +1,20 @@
 ### Brief
 
-Slate + Packer with the same packages?
+Refactored Shopify Slate(0.14.0), so we can still use it on M2 Chip or other latest OS.
 
+# How to test the cli commands
 
-https://gulpjs.com/docs/en/getting-started/async-completion
+```shell
+# at the root folder
+>node ./src/index.js
 
-https://www.npmjs.com/package/@shopify/themekit#api
+# test the bin with build file
+>node ./dist/index.js
 
-https://medium.com/gulpjs/gulp-util-ca3b1f9f9ac5
+# enable debug message
+>DEBUG=1 node ./src/index.js
+```
 
-
-https://www.npmjs.com/package/cli-table
-
-
-https://github.com/hayes0724/shopify-packer/blob/master/src/theme/index.js
-
-1. generate theme folder via script - slate 
-2. genreate theme folder via script - packer
-3. list theme via env config
-
-
-0. Use ES6 Module, not use CommonJS
-1. import vinylPaths from 'vinyl-paths'
-https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md
-https://gulpjs.com/docs/en/getting-started/javascript-and-gulpfiles/
-https://github.com/standard-things/esm/issues/826
-https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+# Known issues
+1. The overwrite function might be wrong.
+2. Not fully test yet
