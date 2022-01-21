@@ -1,9 +1,8 @@
 import enquirer from 'enquirer'
-import utils from '../utils.js'
+import { logger, isShopifyTheme, writePackageJsonSync, move, unminifyJson, isShpoifyThemeWhitelistDir, isShopifyThemeSettingsFile, downloadFromUrl } from '../utils.js'
 import { join } from 'path'
 import { existsSync, mkdirSync, readdirSync } from 'fs'
 import figures from 'figures'
-const logger = utils.logger
 
 
 export default function (cli) {
@@ -20,7 +19,7 @@ export default function (cli) {
             if (!answer) return
 
             // check project structure
-            if (!utils.isShopifyTheme(workingDirectory)) {
+            if (!isShopifyTheme(workingDirectory)) {
                 logger.warming("The current directory doesn't have /layout/theme.liquid. We have to assume this isn't a Shopify theme\n")
                 logger.error('Migration failed\n', figures.cross)
                 return
@@ -51,25 +50,25 @@ export default function (cli) {
             mkdirSync(scriptsDir)
 
             // @todo write package json
-            if (!existsSync(pkgJson)) utils.writePackageJsonSync(pkgJson)
+            if (!existsSync(pkgJson)) writePackageJsonSync(pkgJson)
 
             // Move
             const movePromiseFactory = (file) => {
                 logger.info(`Migrating ${file} to src/...`)
-                return utils.move(join(workingDirectory, file), join(srcDir, file))
+                return move(join(workingDirectory, file), join(srcDir, file))
             }
 
             // unminify JSON
-            const unminifyJsonPromiseFactory = (file) => utils.unminifyJson(join(configDir, file));
+            const unminifyJsonPromiseFactory = (file) => unminifyJson(join(configDir, file));
 
             try {
                 let files = readdirSync(workingDirectory)
-                const movePromises = files.filter(utils.isShpoifyThemeWhitelistDir).map(movePromiseFactory)
+                const movePromises = files.filter(isShpoifyThemeWhitelistDir).map(movePromiseFactory)
                 await Promise.all(movePromises)
 
                 logger.success('Migration to src/ completed\n', figures.tick)
 
-                const configDirFiles = readdirSync(configDir).filter(utils.isShopifyThemeSettingsFile)
+                const configDirFiles = readdirSync(configDir).filter(isShopifyThemeSettingsFile)
                 const unminifyPromises = configDirFiles.map(unminifyJsonPromiseFactory)
                 await Promise.all(unminifyPromises)
 
@@ -79,7 +78,7 @@ export default function (cli) {
 
                 // generate config.yml
                 if (!existsSync(configYml)) {
-                    await utils.downloadFromUrl(
+                    await downloadFromUrl(
                         'https://raw.githubusercontent.com/Shopify/slate/0.x/packages/slate-theme/config-sample.yml',
                         configYml
                     )

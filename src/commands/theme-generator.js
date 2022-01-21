@@ -1,9 +1,8 @@
 import {existsSync, mkdirSync} from 'fs'
 import { join } from 'path'
 import Enquirer from 'enquirer'
-import utils from '../utils.js'
+import { logger, downloadFromUrl, writePackageJsonSync, unzip } from '../utils.js'
 import figures from 'figures'
-const { logger, downloadFromUrl, writePackageJsonSync, unzip } = utils
 const { prompt } = Enquirer
 
 export default function (cli) {

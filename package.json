@@ -3,9 +3,9 @@
     "version": "0.14.1",
     "description": "Shopify Old Slate + Packer",
     "type": "module",
-    "main": "dist/index.mjs",
+    "main": "dist/index.js",
     "bin": {
-        "slate": "dist/index.mjs"
+        "slate": "dist/index.js"
     },
     "author": "Leo Chen <leo.cxy88@gmail.com>",
     "license": "MIT",
