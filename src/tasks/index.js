@@ -1,5 +1,6 @@
-const { series } = require('gulp')
-const tasks = require('./utils')
+import Gulp from 'gulp'
+const { task, series } = Gulp
+// const tasks = require('./utils')
 const test = (cb) => {
     console.log('test fn')
     cb()
@@ -10,12 +11,10 @@ const test2 = (cb) => {
     cb()
 }
 
-const watchTasks = (cb) => {
-    console.log('watch', cb)
-    cb()
-}
+task('default', series(test2, test))
 
-  
-exports.build = series(test2, test)
 
-exports.watch = series(tasks['validate:id'], tasks['build:config'], watchTasks)
+
+// exports.build = series(test2, test)
+
+// exports.watch = series(tasks['validate:id'], tasks['build:config'], watchTasks)

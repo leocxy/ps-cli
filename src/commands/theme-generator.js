@@ -1,10 +1,13 @@
-const {existsSync, mkdirSync} = require('fs')
-const { join } = require('path')
-const { prompt } = require('enquirer')
-const { logger, downloadFromUrl, writePackageJsonSync, unzip } = require('../utils')
+import {existsSync, mkdirSync} from 'fs'
+import { join } from 'path'
+import Enquirer from 'enquirer'
+import utils from '../utils.js'
+import figures from 'figures'
+const { logger, downloadFromUrl, writePackageJsonSync, unzip } = utils
+const { prompt } = Enquirer
 
-module.exports = (cli, figures) => {
-    cli.command('theme [name]')
+export default function (cli) {
+    cli.command('generate [name]')
         .description("Generates a new theme directory containing Slate's theme boilerplate.")
         .option('--npm', 'install theme dependencies with npm instaed of npm')
         .action(async (name, options={}) => {

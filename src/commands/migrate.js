@@ -1,19 +1,21 @@
-const { Confirm } = require('enquirer')
-const utils = require('../utils')
-const {join} = require('path')
-const { existsSync, mkdirSync, readdirSync } = require('fs')
+import enquirer from 'enquirer'
+import utils from '../utils.js'
+import { join } from 'path'
+import { existsSync, mkdirSync, readdirSync } from 'fs'
+import figures from 'figures'
 const logger = utils.logger
 
 
-module.exports = (cli, figures) => {
+export default function (cli) {
     cli.command('migrate')
         .description('Converts an existing theme to work with Slate Structure.')
         .option('--npm', 'installs theme dependencies with npm instead of yarn')
         .action(async (options = {}) => {
             const workingDirectory = process.cwd()
-            let answer = await new Confirm({
+            const { confirm } = enquirer
+            let answer = await confirm({
                 message: "Warning! This will change your theme's folder structure. Are you sure you want to proceed?"
-            }).run()
+            })
 
             if (!answer) return
 
@@ -64,9 +66,9 @@ module.exports = (cli, figures) => {
                 let files = readdirSync(workingDirectory)
                 const movePromises = files.filter(utils.isShpoifyThemeWhitelistDir).map(movePromiseFactory)
                 await Promise.all(movePromises)
-                
+
                 logger.success('Migration to src/ completed\n', figures.tick)
-                
+
                 const configDirFiles = readdirSync(configDir).filter(utils.isShopifyThemeSettingsFile)
                 const unminifyPromises = configDirFiles.map(unminifyJsonPromiseFactory)
                 await Promise.all(unminifyPromises)

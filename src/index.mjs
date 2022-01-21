@@ -6,7 +6,7 @@ import chalk from 'chalk'
 import figures from 'figures'
 import updateNotifier from 'update-notifier'
 import { Command } from 'commander/esm.mjs';
-import {config} from './utils.js'
+import { config } from './utils.js'
 
 const pkg = JSON.parse(readFileSync(join(config.currentDirectory, normalize('../package.json'))));
 const cli = new Command()
@@ -32,8 +32,12 @@ updateNotifier({
 
 
 // register commands
-import commandRegister from './commands/index.js'
-commandRegister(cli, figures)
+import cli_generator from './commands/theme-generator.js'
+import cli_migrate from './commands/migrate.js'
+import cli_watch from './commands/watch.js'
+cli_generator(cli)
+cli_migrate(cli)
+cli_watch(cli)
 
 // @todo update
 cli.addHelpText('before', () => outputSlateThemeCheck(false))
