@@ -1,11 +1,11 @@
-const { config } = require('../utils')
-const { join } = require('path')
-const { existsSync } = require('fs')
-const pkg = require(join(config.themeRoot, 'package.json'))
-const { merge } = require('webpack-merge')
+import { config } from '../utils.js'
+import { join } from 'path'
+import { existsSync, readFileSync } from 'fs'
+import { merge } from 'webpack-merge'
+const pkg = readFileSync(join(config.themeRoot, 'package.json'))
 /**
  * common configuration
- * 
+ *
  *  @prop {String} packageJson - path to package.json file
  *  @prop {String} themeRoot - path to working directory
  *  @prop {String} tkconfig - path to themekit config file
@@ -73,22 +73,15 @@ let slateConfig = {
         css: 'src/styles/*.{css,scss}'
     },
     plugins: {
-        svgmin: {
-            plugins: []
-        }
+        svgmin: {multipass: true}
     }
 }
 const slateConfigJS = join(config.themeRoot, 'slate.config.js')
 if (existsSync(slateConfigJS)) {
-    slateConfig = merge(slateConfig, require(slateConfigJS))
+    slateConfig = merge(slateConfig, readFileSync(slateConfigJS))
 }
 
-module.exports = {
-    // common
+export {
     commonConfig,
-    // slate
-    slateConfig,
-    // webpack
-
-    // packer
+    slateConfig
 }
