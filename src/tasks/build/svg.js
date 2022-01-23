@@ -2,7 +2,7 @@ import plumber from 'gulp-plumber'
 import size from 'gulp-size'
 import svgmin from 'gulp-svgmin'
 import extReplace from 'gulp-ext-replace'
-import { EventCache, deletFiles, watch, src, dest } from "../helper.js"
+import { EventInstance, deletFiles, watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
 
@@ -16,6 +16,7 @@ import { logger } from "../../utils.js"
  */
  const processIcons = (files) => {
     logger.processFiles('build:svg')
+    // @todo overwrite the process
     return src(files)
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(svgmin(slateConfig.plugins.svgmin))
@@ -34,6 +35,7 @@ import { logger } from "../../utils.js"
  */
 const removeIcons = (files) => {
     logger.processFiles('remove:svg')
+    // @todo overwrite the process
     files = files.map(file => file.replace('src/icons', 'dist/snippets').replace('.svg', '.liquid'))
     return deletFiles(files)
 }
@@ -44,14 +46,12 @@ export default {
         return processIcons(slateConfig.src.icons)
     },
     'watch:svg': () => {
-        var events = new EventCache()
-
         watch(slateConfig.src.icons, {
             ignoreInitial: true
         }).on('all', (event, path) => {
             logger.fileEvent(event, path)
-            events.addEvent(event, path)
-            events.processEvent(processIcons, processIcons)
+            EventInstance.addEvent(event, path)
+            EventInstance.processEvent(processIcons, removeIcons)
         })
     }
 }

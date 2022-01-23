@@ -75,7 +75,11 @@ class EventCache {
     }
 }
 
+// Init an instance
+const EventInstance = new EventCache()
+
 export {
+    EventInstance,
     EventCache,
     deletFiles,
     watch,

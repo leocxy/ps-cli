@@ -5,6 +5,9 @@ import Gulp from 'gulp'
 import config_jobs from './build/config.js'
 import assets_jobs from './build/assets.js'
 import svg_jobs from './build/svg.js'
+import css_jobs from './build/css.js'
+import js_jobs from './build/js.js'
+
 const { task, series, parallel } = Gulp
 // const tasks = require('./utils')
 const test = (cb) => {
@@ -27,8 +30,8 @@ task('watch', series(
         assets_jobs['watch:assets'],
         config_jobs['watch:config'],
         svg_jobs['watch:svg'],
-//   'watch:css',
-//   'watch:js',
-//   'watch:vendor-js',
+        css_jobs['watch:css'],
+        js_jobs['watch:js'],
+        js_jobs['watch:vendor-js']
     )
 ))

@@ -60,12 +60,12 @@ let slateConfig = {
         vendorCss: 'src/styles/vendor/*.{css,scss}',
         assets: 'src/assets/**/*',
         icons: 'src/icons/**/*.svg',
-        templates: 'src/templates/**/*',
-        snippets: 'src/snippets/*',
-        sections: 'src/sections/*',
-        locales: 'src/locales/*',
-        config: 'src/config/*',
-        layout: 'src/layout/*',
+        templates: 'src/templates/**/*.{liquid,json}',
+        snippets: 'src/snippets/*.liquid',
+        sections: 'src/sections/*.liquid',
+        locales: 'src/locales/*.json',
+        config: 'src/config/*.json',
+        layout: 'src/layout/*.liquid',
     },
     roots: {
         js: 'src/scripts/*.{js,js.liquid}',
@@ -73,7 +73,16 @@ let slateConfig = {
         css: 'src/styles/*.{css,scss}'
     },
     plugins: {
-        svgmin: {multipass: true}
+        svgmin: {multipass: true},
+        babel: ['@babel/transform-runtime'],
+        uglify: {
+            theme: {},
+            vendor: {
+                mangle: true,
+                compress: true,
+                output: { comments: 'some' }
+            }
+        }
     }
 }
 const slateConfigJS = join(config.themeRoot, 'slate.config.js')
