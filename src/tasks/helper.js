@@ -1,9 +1,6 @@
-import { readFileSync } from 'fs'
 import gulp from 'gulp'
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
-import svgmin from 'gulp-svgmin'
-import extReplace from 'gulp-ext-replace'
 import { load } from 'js-yaml'
 import yargs from "yargs"
 import { hideBin } from 'yargs/helpers'
@@ -11,10 +8,10 @@ import chokidar from 'chokidar'
 import debounce from 'lodash.debounce'
 import vinylPaths from 'vinyl-paths'
 import del from 'del'
-import { commonConfig, slateConfig } from './config.js'
+import { commonConfig } from './config.js'
 import { logger } from '../utils.js'
 const argv = yargs(hideBin(process.argv)).argv
-const { watch } = gulp
+const { watch, src, dest } = gulp
 
 
 const deletFiles = (files) => {
@@ -22,66 +19,6 @@ const deletFiles = (files) => {
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(vinylPaths(del))
         .pipe(size({showFiles: true}))
-}
-
-/**
- * Copies assets to the `/dist` directory
- *
- * @param {Array} files
- * @returns {Stream}
- * @private
- */
-const processAssets = (files) => {
-    logger.processFiles('build:assets')
-    return gulp.src(files, { base: slateConfig.src.root })
-        .pipe(plumber(logger.plumberErrorHandle))
-        .pipe(size({showFiles: true}))
-        .pipe(gulp.dest(commonConfig.dist.root))
-}
-
-/**
- * Deletes specified files
- *
- * @param {Array} files
- * @returns {Stream}
- * @private
- */
-const removeAssets = (files) => {
-    logger.processFiles('remove:assets')
-    files = files.map((file) => file.replace(slateConfig.src.root, slateConfig.dist.root))
-    return deletFiles(files)
-}
-
-/**
- * Processing for SVGs prior to deployment - adds accessibility markup, and converts
- * the file to a liquid snippet.
- *
- * @param {String|Array} files - glob/array of files to match & send to the stream
- * @returns {Stream}
- * @private
- */
-const processIcons = (files) => {
-    logger.processFiles('build:svg')
-    return gulp.src(files)
-        .pipe(plumber(logger.plumberErrorHandle))
-        .pipe(svgmin(slateConfig.plugins.svgmin))
-        .pipe(extReplace('.liquid'))
-        .pipe(size({showFiles: true, pretty: true}))
-        .pipe(gulp.dest(commonConfig.dist.snippets))
-}
-
-/**
- * Cleanup/remove liquid snippets from the `dist` directory during watch tasks if
- * any underlying SVG files in the `src` folder have been removed.
- *
- * @param {Array} files - glob/array of files to match & send to the stream
- * @returns {Stream}
- * @private
- */
-const removeIcons = (files) => {
-    logger.processFiles('remove:svg')
-    files = files.map(file => file.replace('src/icons', 'dist/snippets').replace('.svg', '.liquid'))
-    return deletFiles(files)
 }
 
 /**
@@ -140,11 +77,10 @@ class EventCache {
 
 export {
     EventCache,
-    processAssets,
-    removeAssets,
-    processIcons,
-    removeIcons,
+    deletFiles,
     watch,
+    src,
+    dest,
 }
 
 // gulp sub tasks

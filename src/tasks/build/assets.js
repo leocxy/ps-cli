@@ -1,7 +1,8 @@
-import { EventCache, processAssets, removeAssets, watch } from "../helper.js"
-import { slateConfig } from '../config.js'
+import plumber from 'gulp-plumber'
+import size from 'gulp-size'
+import { EventCache, deletFiles, watch, src, dest } from "../helper.js"
+import { slateConfig,commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
-import vinylPaths from "vinyl-paths"
 
 const assetPaths = [
     slateConfig.src.assets,
@@ -12,6 +13,34 @@ const assetPaths = [
     slateConfig.src.config,
     slateConfig.src.layout
 ]
+
+/**
+ * Copies assets to the `/dist` directory
+ *
+ * @param {Array} files
+ * @returns {Stream}
+ * @private
+ */
+ const processAssets = (files) => {
+    logger.processFiles('build:assets')
+    return src(files, { base: slateConfig.src.root })
+        .pipe(plumber(logger.plumberErrorHandle))
+        .pipe(size({showFiles: true}))
+        .pipe(dest(commonConfig.dist.root))
+}
+
+/**
+ * Deletes specified files
+ *
+ * @param {Array} files
+ * @returns {Stream}
+ * @private
+ */
+const removeAssets = (files) => {
+    logger.processFiles('remove:assets')
+    files = files.map((file) => file.replace(slateConfig.src.root, slateConfig.dist.root))
+    return deletFiles(files)
+}
 
 export default {
     /**
@@ -32,7 +61,7 @@ export default {
      * @memberof slate-cli.tasks.watch
      * @static
      */
-    'watch:assets': (cb) => {
+    'watch:assets': () => {
         var events = new EventCache()
 
         watch(assetPaths, {
@@ -43,7 +72,5 @@ export default {
             events.addEvent(event, path)
             events.processEvent(processAssets, removeAssets)
         })
-
-        return cb()
     }
 }

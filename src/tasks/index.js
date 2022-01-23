@@ -4,8 +4,8 @@
 import Gulp from 'gulp'
 import config_jobs from './build/config.js'
 import assets_jobs from './build/assets.js'
-console.log(assets_jobs, config_jobs)
-const { task, series } = Gulp
+import svg_jobs from './build/svg.js'
+const { task, series, parallel } = Gulp
 // const tasks = require('./utils')
 const test = (cb) => {
     console.log('test fn')
@@ -23,7 +23,12 @@ task('watch', series(
     config_jobs['validate:id'],
     config_jobs['build:config'],
     // observers
-    assets_jobs['watch:assets'],
-    // config_jobs['watch:config'],
-
+    parallel(
+        assets_jobs['watch:assets'],
+        config_jobs['watch:config'],
+        svg_jobs['watch:svg'],
+//   'watch:css',
+//   'watch:js',
+//   'watch:vendor-js',
+    )
 ))

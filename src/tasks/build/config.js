@@ -1,11 +1,10 @@
 import { readFileSync } from 'fs'
 import { load } from 'js-yaml'
-import gulp from 'gulp'
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
 import { commonConfig } from '../config.js'
 import { logger } from '../../utils.js'
-import { watch } from '../helper.js'
+import { watch, dest, src } from '../helper.js'
 
 /**
  * Validate theme_id used for the environment
@@ -27,10 +26,10 @@ import { watch } from '../helper.js'
  * @returns
  */
 const processConfig = (file) => {
-    return gulp.src(file)
+    return src(file)
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(size({showFiles: true}))
-        .pipe(gulp.dest(commonConfig.dist.root))
+        .pipe(dest(commonConfig.dist.root))
 }
 
 export default {
@@ -90,6 +89,7 @@ export default {
      */
     'watch:config': () => {
         logger.processFiles('watch:config')
+
         watch(commonConfig.tkConfig, {
             ignoreInitial: true
         }).on('all', (event, path) => {
