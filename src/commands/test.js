@@ -1,9 +1,18 @@
+import { spawn } from 'cross-spawn'
+import Debug from 'debug'
+import {config} from '../utils.js'
+const debug = Debug('1')
+
 export default function (cli) {
     cli.command('test')
-    .description('Runs translation tests for a theme\'s locale files (<theme>/src/locales/).\nRun liquid syntax check for a theme\'s liquid files')
+    .description('devloper testing something')
     .option('-l, --liquid', "liquid files only")
     .option('-g, --locale', "locales only")
     .action((options = {}) => {
-        console.log(options)
+        debug(`--gulpfile ${config.gulpFile}`)
+            debug(`--cwd ${config.themeRoot}`)
+            debug(options)
+
+            spawn(config.gulp, ['test', '--gulpfile', config.gulpFile, '--cwd', config.themeRoot, '--env', options.env], { stdio: 'inherit'})
     })
 }

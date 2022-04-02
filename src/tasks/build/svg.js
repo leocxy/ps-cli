@@ -47,7 +47,8 @@ export default {
     },
     'watch:svg': () => {
         watch(slateConfig.src.icons, {
-            ignoreInitial: true
+            ignoreInitial: true,
+            delay: 500
         }).on('all', (event, path) => {
             logger.fileEvent(event, path)
             EventInstance.addEvent(event, path)

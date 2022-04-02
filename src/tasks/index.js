@@ -10,6 +10,7 @@ import js_jobs from './build/js.js'
 
 const { task, series, parallel } = Gulp
 // const tasks = require('./utils')
+
 const test = (cb) => {
     console.log('test fn')
     cb()
@@ -20,7 +21,7 @@ const test2 = (cb) => {
     cb()
 }
 
-task('default', series(test2, test))
+task('test', series(test2, test))
 
 task('watch', series(
     config_jobs['validate:id'],

@@ -1,18 +1,13 @@
 import gulp from 'gulp'
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
-import { load } from 'js-yaml'
-import yargs from "yargs"
-import { hideBin } from 'yargs/helpers'
 import chokidar from 'chokidar'
 import debounce from 'lodash.debounce'
 import vinylPaths from 'vinyl-paths'
 import del from 'del'
 import { commonConfig } from './config.js'
 import { logger } from '../utils.js'
-const argv = yargs(hideBin(process.argv)).argv
 const { watch, src, dest } = gulp
-
 
 const deletFiles = (files) => {
     return gulp.src(files)
@@ -77,6 +72,7 @@ class EventCache {
 
 // Init an instance
 const EventInstance = new EventCache()
+
 
 export {
     EventInstance,

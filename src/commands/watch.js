@@ -1,7 +1,7 @@
 import { spawn } from 'cross-spawn'
 import Debug from 'debug'
 import {config} from '../utils.js'
-const debug = Debug('watch')
+const debug = Debug('1')
 
 export default function (cli) {
     cli.command('watch')

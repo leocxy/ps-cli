@@ -35,9 +35,11 @@ updateNotifier({
 import cli_generator from './commands/theme-generator.js'
 import cli_migrate from './commands/migrate.js'
 import cli_watch from './commands/watch.js'
+import cli_test from './commands/test.js'
 cli_generator(cli)
 cli_migrate(cli)
 cli_watch(cli)
+cli_test(cli)
 
 // @todo update
 cli.addHelpText('before', () => outputSlateThemeCheck(false))

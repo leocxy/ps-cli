@@ -2,7 +2,11 @@ import { config } from '../utils.js'
 import { join } from 'path'
 import { existsSync, readFileSync } from 'fs'
 import { merge } from 'webpack-merge'
+import yargs from "yargs"
+import { hideBin } from 'yargs/helpers'
 const pkg = readFileSync(join(config.themeRoot, 'package.json'))
+const argv = yargs(hideBin(process.argv)).argv
+
 /**
  * common configuration
  *
@@ -50,6 +54,8 @@ let commonConfig = {
  */
 let slateConfig = {
     deployLog: join(config.themeRoot, 'deploy.log'),
+    env: argv['env'],
+    cwd: argv['cwd'],
     src: {
         root: 'src/',
         js: 'src/scripts/**/*.{js,js.liquid}',

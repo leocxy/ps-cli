@@ -1,7 +1,7 @@
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
 import { EventInstance, deletFiles, watch, src, dest } from "../helper.js"
-import { slateConfig,commonConfig } from '../config.js'
+import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
 
 const assetPaths = [

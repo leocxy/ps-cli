@@ -211,6 +211,9 @@ const logger = {
     },
     plumberErrorHandle: (err) => {
         log(chalk.red(err))
+    },
+    deployTo: (environment) => {
+        log('Initiating deploy to', chalk.bold(environment))
     }
 }
 
