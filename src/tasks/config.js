@@ -12,7 +12,7 @@ const argv = yargs(hideBin(process.argv)).argv
  *
  *  @prop {String} packageJson - path to package.json file
  *  @prop {String} themeRoot - path to working directory
- *  @prop {String} tkConfig - path to themekit config file
+ *  @prop {String} tkConfig - path to themeKit config file
  *  @prop {Object} dist - paths to relevant folder locations in the distributable directory
  */
 let commonConfig = {
@@ -42,7 +42,7 @@ let commonConfig = {
  *   .something(else);
  * ```
  *
- * @namespace salteConfig
+ * @namespace slateConfig
  * @memberof slate-cli
  * @summary Configuring slate-cli
  *  @prop {String} environment - development | staging | production
