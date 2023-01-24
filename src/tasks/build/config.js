@@ -80,7 +80,7 @@ export default {
     /**
      * Watch the config file in our `src/` folder and move it to `dist/`
      * Watches the config file in our dist folder and throw an error to stop all tasks
-     * or watchers when it changes.  Otherwise Themekit will quietly start uploading
+     * or watchers when it changes. Otherwise, themeKit will quietly start uploading
      * files to the new shops defined in `dist/config.yml` with no warning to the user
      *
      * @function watch:config

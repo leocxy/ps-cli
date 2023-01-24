@@ -8,7 +8,7 @@ import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
 
 /**
- * Process the theme JS and copys to `/dist/assets` folder
+ * Process the theme JS and copy to `/dist/assets` folder
  *
  * @param {Array} files
  * @returns {Stream}
