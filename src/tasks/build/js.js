@@ -20,12 +20,12 @@ const processThemeJs = () => {
     // @todo overwrite the process
     return src([slateConfig.roots.js, `!${slateConfig.roots.vendorJs}`])
         .pipe(plumber(logger.plumberErrorHandle))
-        .pipe(sourceMap.init())
+        .pipe(sourceMap.init({}))
         .pipe(babel({plugins: slateConfig.plugins.babel}))
         .pipe(uglify(slateConfig.plugins.uglify.theme))
         .pipe(include())
         .pipe(sourceMap.write())
-        .pipe(dest(commonConfig.dest.assets))
+        .pipe(dest(commonConfig.dist.assets))
 }
 
 /**
@@ -43,7 +43,7 @@ const processVendorJs = () => {
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(include())
         .pipe(uglify(slateConfig.plugins.uglify.vendor))
-        .pipe(dest(commonConfig.dest.assets))
+        .pipe(dest(commonConfig.dist.assets))
 }
 
 export default {

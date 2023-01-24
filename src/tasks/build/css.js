@@ -1,5 +1,5 @@
 import plumber from 'gulp-plumber'
-import cssimport from 'gulp-cssimport'
+import cssImport from 'gulp-cssimport'
 import extReplace from 'gulp-ext-replace'
 import { watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
@@ -18,7 +18,7 @@ const processCss = () => {
     // @todo overwrite the process
     return src(slateConfig.src.css)
         .pipe(plumber(logger.plumberErrorHandle))
-        .pipe(cssimport())
+        .pipe(cssImport())
         .pipe(extReplace('.css.liquid', '.css'))
         .pipe(extReplace('.scss.liquid', '.scss'))
         .pipe(dest(commonConfig.dist.assets))

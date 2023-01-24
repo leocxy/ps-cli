@@ -66,8 +66,8 @@ export default function (cli) {
                 return move(join(workingDirectory, file), join(srcDir, file))
             }
 
-            // unminify JSON
-            const unminifyJsonPromiseFactory = (file) => beautifyJson(join(configDir, file));
+            // beautify JSON
+            const beautifyJsonPromiseFactory = (file) => beautifyJson(join(configDir, file));
 
             try {
                 let files = readdirSync(workingDirectory)
@@ -77,8 +77,8 @@ export default function (cli) {
                 logger.success('Migration to src/ completed\n', figures.tick)
 
                 const configDirFiles = readdirSync(configDir).filter(isShopifyThemeSettingsFile)
-                const unminifyPromises = configDirFiles.map(unminifyJsonPromiseFactory)
-                await Promise.all(unminifyPromises)
+                const beautifyPromises = configDirFiles.map(beautifyJsonPromiseFactory)
+                await Promise.all(beautifyPromises)
 
                 // @todo install dependencies
                 logger.info(`@todo install the dependence using ${options.npm}`)

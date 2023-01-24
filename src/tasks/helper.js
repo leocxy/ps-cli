@@ -5,11 +5,12 @@ import chokidar from 'chokidar'
 import debounce from 'lodash.debounce'
 import vinylPaths from 'vinyl-paths'
 import del from 'del'
-import { commonConfig } from './config.js'
-import { logger } from '../utils.js'
-const { watch, src, dest } = gulp
+import {commonConfig} from './config.js'
+import {logger} from '../utils.js'
 
-const deletFiles = (files) => {
+const {watch, src, dest} = gulp
+
+const deleteFiles = (files) => {
     return gulp.src(files)
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(vinylPaths(del))
@@ -36,7 +37,7 @@ class EventCache {
      * @param {String} path - relative path to file passed via event
      * @returns
      */
-    addEvent (event, path) {
+    addEvent(event, path) {
         if (this.changeEvents.indexOf(event) !== -1) {
             return this.change.indexOf(path) === -1 ? this.change.push(path) : null
         }
@@ -55,7 +56,7 @@ class EventCache {
      * @param {Function} changeFn - a custom function to process the set of files that have changed
      * @param {Function} delFn - a custom function to remove the set of files that have changed from the `dist` directory
      */
-    processEvent (changeFn, delFn) {
+    processEvent(changeFn, delFn) {
         debounce((changeFn, delFn) => {
             if (this.change.length > 0) {
                 changeFn(this.change)
@@ -75,12 +76,7 @@ const EventInstance = new EventCache()
 
 
 export {
-    EventInstance,
-    EventCache,
-    deletFiles,
-    watch,
-    src,
-    dest,
+    EventInstance, EventCache, deleteFiles, watch, src, dest,
 }
 
 // gulp sub tasks
@@ -98,9 +94,7 @@ export default {
      */
     'watch:dist': () => {
         const observer = chokidar.watch(['./', '!config.yml'], {
-            cwd: commonConfig.dist.root,
-            ignored: /(^|[/\\])\../,
-            ignoreInitial: true
+            cwd: commonConfig.dist.root, ignored: /(^|[/\\])\../, ignoreInitial: true
         })
 
         observer.on('all', (event, path) => {

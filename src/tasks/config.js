@@ -12,7 +12,7 @@ const argv = yargs(hideBin(process.argv)).argv
  *
  *  @prop {String} packageJson - path to package.json file
  *  @prop {String} themeRoot - path to working directory
- *  @prop {String} tkconfig - path to themekit config file
+ *  @prop {String} tkConfig - path to themekit config file
  *  @prop {Object} dist - paths to relevant folder locations in the distributable directory
  */
 let commonConfig = {

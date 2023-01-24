@@ -1,15 +1,16 @@
 import {existsSync, mkdirSync} from 'fs'
-import { join } from 'path'
+import {join} from 'path'
 import Enquirer from 'enquirer'
-import { logger, downloadFromUrl, writePackageJsonSync, unzip } from '../utils.js'
+import {logger, downloadFromUrl, writePackageJsonSync, unzip} from '../utils.js'
 import figures from 'figures'
-const { prompt } = Enquirer
+
+const {prompt} = Enquirer
 
 export default function (cli) {
     cli.command('generate [name]')
         .description("Generates a new theme directory containing Slate's theme boilerplate.")
         .option('--npm', 'install theme dependencies with npm instaed of npm')
-        .action(async (name, options={}) => {
+        .action(async (name, options = {}) => {
             let dirName = name
             if (!dirName) {
                 dirName = await prompt({
