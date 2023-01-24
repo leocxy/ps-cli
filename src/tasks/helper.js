@@ -4,7 +4,7 @@ import size from 'gulp-size'
 import chokidar from 'chokidar'
 import debounce from 'lodash.debounce'
 import vinylPaths from 'vinyl-paths'
-import del from 'del'
+import {deleteAsync} from 'del'
 import {commonConfig} from './config.js'
 import {logger} from '../utils.js'
 
@@ -13,7 +13,7 @@ const {watch, src, dest} = gulp
 const deleteFiles = (files) => {
     return gulp.src(files)
         .pipe(plumber(logger.plumberErrorHandle))
-        .pipe(vinylPaths(del))
+        .pipe(vinylPaths(deleteAsync))
         .pipe(size({showFiles: true}))
 }
 

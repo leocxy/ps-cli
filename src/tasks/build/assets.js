@@ -1,6 +1,6 @@
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
-import { EventInstance, deletFiles, watch, src, dest } from "../helper.js"
+import { EventInstance, deleteFiles, watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
 
@@ -42,7 +42,7 @@ const removeAssets = (files) => {
     logger.processFiles('remove:assets')
     // @todo overwrite the process
     files = files.map((file) => file.replace(slateConfig.src.root, slateConfig.dist.root))
-    return deletFiles(files)
+    return deleteFiles(files)
 }
 
 export default {

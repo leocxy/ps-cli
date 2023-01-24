@@ -2,7 +2,7 @@ import plumber from 'gulp-plumber'
 import size from 'gulp-size'
 import svg from 'gulp-svgmin'
 import extReplace from 'gulp-ext-replace'
-import { EventInstance, deletFiles, watch, src, dest } from "../helper.js"
+import { EventInstance, deleteFiles, watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
 
@@ -37,7 +37,7 @@ const removeIcons = (files) => {
     logger.processFiles('remove:svg')
     // @todo overwrite the process
     files = files.map(file => file.replace('src/icons', 'dist/snippets').replace('.svg', '.liquid'))
-    return deletFiles(files)
+    return deleteFiles(files)
 }
 
 export default {

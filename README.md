@@ -29,3 +29,13 @@ https://gulpjs.com/docs/en/getting-started/javascript-and-gulpfiles/
 https://github.com/standard-things/esm/issues/826
 https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
+
+# How to test the cli commands
+
+```shell
+# at the root folder
+>node ./src/index.js
+
+# test the bin with build file
+>node ./dist/index.js
+```
