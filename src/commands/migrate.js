@@ -1,7 +1,15 @@
 import enquirer from 'enquirer'
-import { logger, isShopifyTheme, writePackageJsonSync, move, unminifyJson, isShpoifyThemeWhitelistDir, isShopifyThemeSettingsFile, downloadFromUrl } from '../utils.js'
-import { join } from 'path'
-import { existsSync, mkdirSync, readdirSync } from 'fs'
+import {
+    logger,
+    isShopifyTheme,
+    writePackageJsonSync,
+    move,
+    isShopifyThemeSettingsFile,
+    downloadFromUrl,
+    beautifyJson, isShopifyThemeWhitelistDir
+} from '../utils.js'
+import {join} from 'path'
+import {existsSync, mkdirSync, readdirSync} from 'fs'
 import figures from 'figures'
 
 
@@ -11,7 +19,7 @@ export default function (cli) {
         .option('--npm', 'installs theme dependencies with npm instead of yarn')
         .action(async (options = {}) => {
             const workingDirectory = process.cwd()
-            const { confirm } = enquirer
+            const {confirm} = enquirer
             let answer = await confirm({
                 message: "Warning! This will change your theme's folder structure. Are you sure you want to proceed?"
             })
@@ -59,11 +67,11 @@ export default function (cli) {
             }
 
             // unminify JSON
-            const unminifyJsonPromiseFactory = (file) => unminifyJson(join(configDir, file));
+            const unminifyJsonPromiseFactory = (file) => beautifyJson(join(configDir, file));
 
             try {
                 let files = readdirSync(workingDirectory)
-                const movePromises = files.filter(isShpoifyThemeWhitelistDir).map(movePromiseFactory)
+                const movePromises = files.filter(isShopifyThemeWhitelistDir).map(movePromiseFactory)
                 await Promise.all(movePromises)
 
                 logger.success('Migration to src/ completed\n', figures.tick)
