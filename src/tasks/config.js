@@ -55,6 +55,7 @@ let commonConfig = {
 let slateConfig = {
     deployLog: join(config.themeRoot, 'deploy.log'),
     env: argv['env'],
+    ignoreFiles: [],
     cwd: argv['cwd'],
     src: {
         root: 'src/',
@@ -79,7 +80,7 @@ let slateConfig = {
         css: 'src/styles/*.{css,scss}'
     },
     plugins: {
-        svgmin: {multipass: true},
+        svgMin: {multipass: true},
         babel: ['@babel/transform-runtime'],
         uglify: {
             theme: {},

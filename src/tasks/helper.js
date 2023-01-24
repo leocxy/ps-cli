@@ -5,10 +5,14 @@ import chokidar from 'chokidar'
 import debounce from 'lodash.debounce'
 import vinylPaths from 'vinyl-paths'
 import {deleteAsync} from 'del'
-import {commonConfig} from './config.js'
+import Debug from "debug";
+import themeKit from '@shopify/themekit'
+import {slateConfig, commonConfig} from "./config.js";
 import {logger} from '../utils.js'
 
-const {watch, src, dest} = gulp
+const debug = Debug('1')
+const {src, dest} = gulp
+const watch = chokidar.watch
 
 const deleteFiles = (files) => {
     return gulp.src(files)
@@ -22,12 +26,13 @@ const deleteFiles = (files) => {
  * file changes that occur in rapid succession during watch tasks.
  *
  */
-class EventCache {
+class eventCache {
     constructor() {
         this.changeEvents = ['add', 'change']
         this.unlinkEvents = ['unlink']
         this.change = []
         this.unlink = []
+        this.active = false
     }
 
     /**
@@ -39,11 +44,11 @@ class EventCache {
      */
     addEvent(event, path) {
         if (this.changeEvents.indexOf(event) !== -1) {
-            return this.change.indexOf(path) === -1 ? this.change.push(path) : null
+            if (slateConfig.ignoreFiles.indexOf(path) === -1) this.change.push(path)
+            return
         }
-
         if (this.unlinkEvents.indexOf(event) !== -1) {
-            return this.unlink.indexOf(path) === -1 ? this.unlink.push(path) : null
+            if (slateConfig.ignoreFiles.indexOf(path) === -1) this.unlink.push(path)
         }
     }
 
@@ -69,37 +74,59 @@ class EventCache {
             }
         }, 320)(changeFn, delFn)
     }
+
+    checkDeployStatus() {
+        if (this.active) return
+        if (this.change.length) {
+            this.active = true
+            this.deployFiles('deploy', this.change).then(() => {
+                this.change = []
+                this.checkDeployStatus()
+            })
+        } else if (this.unlink.length) {
+            this.active = true
+            this.deployFiles('remove', this.unlink).then(() => {
+                this.unlink = []
+                this.checkDeployStatus()
+            })
+        }
+    }
+
+    deployFiles(cmd, files) {
+        logger.logChildProcess(cmd)
+        return new Promise((resolve, reject) => {
+            debug(`theme-kit cwd to ${commonConfig.dist.root}`);
+            // ignoreFiles,
+            themeKit.command(
+                cmd,
+                {env: slateConfig.env, files},
+                {cwd: commonConfig.dist.root}
+            ).then(() => {
+                logger.logDeploysSuccess(cmd, files)
+                this.active = false
+                resolve()
+            }).catch((err) => {
+                logger.logDeployErrors(cmd, files, err)
+                this.active = false
+                reject(err)
+            })
+        })
+    }
+
+    debounceDeploy() {
+        debounce(this.checkDeployStatus, 320).bind(this)()
+    }
 }
 
 // Init an instance
-const EventInstance = new EventCache()
+const evenInstance = new eventCache()
 
 
 export {
-    EventInstance, EventCache, deleteFiles, watch, src, dest,
-}
-
-// gulp sub tasks
-export default {
-
-    /**
-     * Watches for changes in the `./dist` folder and passes event data to the
-     * `cache` via {@link pushToCache}. A debounced {@link deployStatus} is also
-     * called to pass files updated to the remote server through {@link deploy}
-     * when any active deploy completes.
-     *
-     * @function watch:dist
-     * @memberof slate-cli.tasks.watch
-     * @static
-     */
-    'watch:dist': () => {
-        const observer = chokidar.watch(['./', '!config.yml'], {
-            cwd: commonConfig.dist.root, ignored: /(^|[/\\])\../, ignoreInitial: true
-        })
-
-        observer.on('all', (event, path) => {
-            logger.fileEvent(event, path)
-            // debounce @todo
-        })
-    },
+    evenInstance,
+    eventCache,
+    deleteFiles,
+    src,
+    dest,
+    watch
 }

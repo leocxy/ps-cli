@@ -1,10 +1,10 @@
-import { readFileSync } from 'fs'
-import { load } from 'js-yaml'
+import {readFileSync} from 'fs'
+import {load} from 'js-yaml'
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
-import { commonConfig } from '../config.js'
-import { logger } from '../../utils.js'
-import { watch, dest, src } from '../helper.js'
+import {commonConfig, slateConfig} from '../config.js'
+import {logger} from '../../utils.js'
+import {watch, dest, src} from '../helper.js'
 
 /**
  * Validate theme_id used for the environment
@@ -12,12 +12,43 @@ import { watch, dest, src } from '../helper.js'
  * @returns {Promise}
  * @private
  */
- const validateId = (settings) => {
+const validateId = (settings) => {
     return new Promise((resolve, reject) => {
         if (settings.theme_id === 'live') resolve()
         const id = Number(settings.theme_id)
         isNaN(id) ? reject(settings) : resolve()
     })
+}
+
+const checkConfigs = () => {
+    try {
+        let file = readFileSync(commonConfig.tkConfig, 'utf-8')
+        let tkConfig = load(file)
+        const promises = []
+
+        Object.keys(tkConfig).forEach(env => {
+            promises.push(validateId({theme_id: tkConfig[env].theme_id, env: env}))
+        })
+
+        return Promise.all(promises).then(() => {
+            return new Promise((resolve, reject) => {
+                if (Object.keys(tkConfig).indexOf(slateConfig.env) === -1) reject(`Environment: ${slateConfig.env} does not exists!`)
+                slateConfig.ignoreFiles = tkConfig[slateConfig.env]?.ignore_files || []
+                resolve()
+            })
+        }).catch(err => {
+            if (typeof (err) === 'object') {
+                logger.invalidThemeId(err.theme_id, err.env)
+            } else {
+                logger.error(err)
+            }
+            throw new Error('Exit by error!')
+        })
+    } catch (err) {
+        if (err.code != 'ENOENT') throw new Error(err)
+        logger.configError()
+        throw new Error('An Error Occurred')
+    }
 }
 
 /**
@@ -40,28 +71,7 @@ export default {
      * @private
      */
     'validate:id': () => {
-        let file
-        try {
-            file = readFileSync(commonConfig.tkConfig, 'utf-8')
-        } catch (err) {
-            if (err.code != 'ENOENT') throw new Error(err)
-
-            logger.configError()
-
-            throw new Error('An Error Occurred')
-        }
-
-        const tkConfig = load(file)
-        const promises = []
-
-        Object.keys(tkConfig).forEach(env => {
-            promises.push(validateId({theme_id: tkConfig[env].theme_id, env: env}))
-        })
-
-        return Promise.all(promises).catch(result => {
-            logger.invalidThemeId(result.theme_id, result.env)
-            throw new Error('Exit caused by the error')
-        })
+        return checkConfigs()
     },
     /**
      * ThemeKit requires the config file to be in the `root` directory for files it
@@ -72,10 +82,11 @@ export default {
      * @memberof slate-cli.tasks.build
      * @static
      */
-     'build:config': () => {
+    'build:config': () => {
         logger.processFiles('build:config')
-
-        return processConfig(commonConfig.tkConfig)
+        return checkConfigs().then(() => {
+            return processConfig(commonConfig.tkConfig)
+        })
     },
     /**
      * Watch the config file in our `src/` folder and move it to `dist/`
@@ -94,7 +105,9 @@ export default {
             ignoreInitial: true
         }).on('all', (event, path) => {
             logger.fileEvent(event, path)
-            processConfig(path)
+            return checkConfigs().then(() => {
+                return processConfig(path)
+            })
         })
     },
 }

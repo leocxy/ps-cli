@@ -7,6 +7,7 @@ import assets_jobs from './build/assets.js'
 import svg_jobs from './build/svg.js'
 import css_jobs from './build/css.js'
 import js_jobs from './build/js.js'
+import deploy_jobs from './build/deploy.js'
 
 const { task, series, parallel } = Gulp
 // const tasks = require('./utils')
@@ -26,6 +27,7 @@ task('test', series(test2, test))
 task('watch', series(
     config_jobs['validate:id'],
     config_jobs['build:config'],
+
     // observers
     parallel(
         assets_jobs['watch:assets'],
@@ -33,6 +35,7 @@ task('watch', series(
         svg_jobs['watch:svg'],
         css_jobs['watch:css'],
         js_jobs['watch:js'],
-        js_jobs['watch:vendor-js']
-    )
+        js_jobs['watch:vendor-js'],
+        deploy_jobs['watch:dist']
+    ),
 ))

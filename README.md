@@ -13,6 +13,6 @@ Refactory Old Shopify Slate
 ```
 
 # TODO
-1. Scss
-2. Delete file
-3. Deploy the server
+1. Delete file ?
+2. deploy to live theme
+3. testing

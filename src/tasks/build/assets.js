@@ -1,6 +1,6 @@
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
-import { EventInstance, deleteFiles, watch, src, dest } from "../helper.js"
+import { evenInstance, deleteFiles, watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
 
@@ -24,7 +24,6 @@ const assetPaths = [
  const processAssets = (files) => {
     logger.processFiles('build:assets')
 
-    // @todo overwrite the process
     return src(files, { base: slateConfig.src.root })
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(size({showFiles: true}))
@@ -40,7 +39,6 @@ const assetPaths = [
  */
 const removeAssets = (files) => {
     logger.processFiles('remove:assets')
-    // @todo overwrite the process
     files = files.map((file) => file.replace(slateConfig.src.root, slateConfig.dist.root))
     return deleteFiles(files)
 }
@@ -70,8 +68,8 @@ export default {
             ignoreInitial: true
         }).on('all', (event, path) => {
             logger.fileEvent(event, path)
-            EventInstance.addEvent(event, path)
-            EventInstance.processEvent(processAssets, removeAssets)
+            evenInstance.addEvent(event, path)
+            evenInstance.processEvent(processAssets, removeAssets)
         })
     }
 }

@@ -2,7 +2,7 @@ import plumber from 'gulp-plumber'
 import size from 'gulp-size'
 import svg from 'gulp-svgmin'
 import extReplace from 'gulp-ext-replace'
-import { EventInstance, deleteFiles, watch, src, dest } from "../helper.js"
+import { evenInstance, deleteFiles, watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
 
@@ -19,7 +19,7 @@ import { logger } from "../../utils.js"
     // @todo overwrite the process
     return src(files)
         .pipe(plumber(logger.plumberErrorHandle))
-        .pipe(svg(slateConfig.plugins.svgmin))
+        .pipe(svg(slateConfig.plugins.svgMin))
         .pipe(extReplace('.liquid'))
         .pipe(size({showFiles: true, pretty: true}))
         .pipe(dest(commonConfig.dist.snippets))
@@ -51,8 +51,8 @@ export default {
             delay: 500
         }).on('all', (event, path) => {
             logger.fileEvent(event, path)
-            EventInstance.addEvent(event, path)
-            EventInstance.processEvent(processIcons, removeIcons)
+            evenInstance.addEvent(event, path)
+            evenInstance.processEvent(processIcons, removeIcons)
         })
     }
 }

@@ -214,7 +214,24 @@ const logger = {
         log(chalk.red(err))
     },
     deployTo: (environment) => {
-        log('Initiating deploy to', chalk.bold(environment))
+        log('Deploying to', chalk.bold(environment))
+    },
+    logChildProcess: (cmd) => {
+        log('running task', chalk.bold('[child process]'), chalk.white('-'), chalk.cyan('theme', cmd));
+    },
+    logDeploysSuccess: (cmd, files) => {
+        let timestamp = `Deploy complete @ ${new Date()}. `
+        let action = cmd === 'deploy' ? 'added/changed ' : 'removed '
+        let number = +`${files.length} file(s): `
+        let fileList = `${files.join(', ')} \n`
+        return timestamp + action + number + fileList
+    },
+    logDeployErrors: (cmd, files, err) => {
+        let timestamp = `Deploy error @ ${new Date()}. `
+        let action = cmd === 'deploy' ? 'added/changed ' : 'removed '
+        let number = +`${files.length} file(s): `
+        let fileList = `${files.join(', ')} \n`
+        return timestamp + action + number + fileList + err + ' \n';
     }
 }
 
