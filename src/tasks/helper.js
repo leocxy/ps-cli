@@ -118,7 +118,6 @@ class eventCache {
     }
 
     deployDistFolder() {
-        console.log(slateConfig.ignoreFiles)
         return themeKit.command(
             'deploy',
             {env: slateConfig.env, ignoredFiles: slateConfig.ignoreFiles},

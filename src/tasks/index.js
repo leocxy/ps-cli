@@ -51,7 +51,10 @@ task('build', series(
 
 task('deploy', series(
     config_jobs['validate:id'],
+    util_jobs['clean'],
     config_jobs['build:config'],
-    'build',
+    assets_jobs['build:assets'],
+    svg_jobs['build:svg'],
+    js_jobs['build:js'],
     deploy_jobs['deploy:dist']
 ))
