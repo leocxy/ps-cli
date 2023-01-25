@@ -3,9 +3,12 @@ import include from 'gulp-include'
 import babel from 'gulp-babel'
 import uglify from 'gulp-uglify'
 import sourceMap from 'gulp-sourcemaps'
-import { watch, src, dest } from "../helper.js"
+import pm from 'picomatch'
+import { eventInstance, deleteFiles, watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
+
+const isMatch = pm(slateConfig.src.js)
 
 /**
  * Process the theme JS and copy to `/dist/assets` folder
@@ -46,15 +49,26 @@ const processVendorJs = () => {
         .pipe(dest(commonConfig.dist.assets))
 }
 
+const removeJs = (files) => {
+    logger.processFiles('remove:js')
+    files = files.map(file => file.replace('src/scripts', 'dist/assets'))
+    // check files ?
+    return deleteFiles(files)
+}
+
 export default {
     'build:js': () => {
-        processThemeJs()
+        return processThemeJs()
     },
     'watch:js': () => {
         watch([slateConfig.roots.js, `!${slateConfig.roots.vendorJs}`, `!${slateConfig.src.vendorJs}`], {
             ignoreInitial: true
         }).on('all', (event, path) => {
             logger.fileEvent(event, path)
+            if (event === 'unlink' && isMatch(path)) {
+                eventInstance.addEvent(event, path)
+                eventInstance.processEvent(() => {}, removeJs)
+            }
             processThemeJs()
         })
     },
@@ -67,6 +81,7 @@ export default {
         }).on('all', (event, path) => {
             logger.fileEvent(event, path)
             processVendorJs()
+            // @todo delete file
         })
     }
 }

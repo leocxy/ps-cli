@@ -15,5 +15,8 @@ export default {
             cache.addEvent(event, path)
             cache.debounceDeploy()
         })
+    },
+    'deploy:dist': () => {
+        return cache.deployDistFolder()
     }
 }

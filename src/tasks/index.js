@@ -8,6 +8,7 @@ import svg_jobs from './build/svg.js'
 import css_jobs from './build/css.js'
 import js_jobs from './build/js.js'
 import deploy_jobs from './build/deploy.js'
+import util_jobs from './build/utils.js'
 
 const { task, series, parallel } = Gulp
 // const tasks = require('./utils')
@@ -38,4 +39,19 @@ task('watch', series(
         js_jobs['watch:vendor-js'],
         deploy_jobs['watch:dist']
     ),
+))
+
+task('build', series(
+    util_jobs['clean'],
+    assets_jobs['build:assets'],
+    svg_jobs['build:svg'],
+    js_jobs['build:js'],
+))
+
+
+task('deploy', series(
+    config_jobs['validate:id'],
+    config_jobs['build:config'],
+    'build',
+    deploy_jobs['deploy:dist']
 ))

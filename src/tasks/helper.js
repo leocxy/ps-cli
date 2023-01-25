@@ -116,14 +116,23 @@ class eventCache {
     debounceDeploy() {
         debounce(this.checkDeployStatus, 320).bind(this)()
     }
+
+    deployDistFolder() {
+        console.log(slateConfig.ignoreFiles)
+        return themeKit.command(
+            'deploy',
+            {env: slateConfig.env, ignoredFiles: slateConfig.ignoreFiles},
+            {cwd: commonConfig.dist.root }
+        )
+    }
 }
 
 // Init an instance
-const evenInstance = new eventCache()
+const eventInstance = new eventCache()
 
 
 export {
-    evenInstance,
+    eventInstance,
     eventCache,
     deleteFiles,
     src,

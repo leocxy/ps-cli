@@ -13,6 +13,8 @@ Refactory Old Shopify Slate
 ```
 
 # TODO
-1. Delete file ?
-2. deploy to live theme
-3. testing
+1. build process
+2. 
+3. deploy to live theme
+4. testing
+5. overwrite function -> inherit existing one
