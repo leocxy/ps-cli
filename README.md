@@ -10,11 +10,13 @@ Refactory Old Shopify Slate
 
 # test the bin with build file
 >node ./dist/index.js
+
+# enable debug message
+>DEBUG=1 node ./src/index.js
 ```
 
 # TODO
-1. build process
-2. 
-3. deploy to live theme
+1. deploy to live theme
+2. browser sync
+3. overwrite function -> inherit existing one
 4. testing
-5. overwrite function -> inherit existing one
