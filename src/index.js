@@ -37,12 +37,14 @@ import cli_migrate from './commands/migrate.js'
 import cli_watch from './commands/watch.js'
 import cli_build from './commands/build.js'
 import cli_deploy from './commands/deploy.js'
+import cli_theme from './commands/theme.js'
 
 cli_generator(cli)
 cli_migrate(cli)
 cli_watch(cli)
 cli_build(cli)
 cli_deploy(cli)
+cli_theme(cli)
 
 // @todo update
 cli.addHelpText('before', () => outputSlateThemeCheck(false))

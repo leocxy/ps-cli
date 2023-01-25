@@ -99,7 +99,13 @@ class eventCache {
             // ignoreFiles,
             themeKit.command(
                 cmd,
-                {env: slateConfig.env, files, ignoredFiles: slateConfig.ignoreFiles, 'allow-live': true},
+                {
+                    env: slateConfig.env,
+                    files,
+                    ignoredFiles: slateConfig.ignoreFiles,
+                    'allow-live': true,
+                    themeid: slateConfig.theme_id
+                },
                 {cwd: commonConfig.dist.root}
             ).then(() => {
                 logger.logDeploysSuccess(cmd, files)
@@ -120,7 +126,12 @@ class eventCache {
     deployDistFolder() {
         return themeKit.command(
             'deploy',
-            {env: slateConfig.env, ignoredFiles: slateConfig.ignoreFiles, 'allow-live': true},
+            {
+                env: slateConfig.env,
+                ignoredFiles: slateConfig.ignoreFiles,
+                'allow-live': true,
+                themeid: slateConfig.theme_id
+            },
             {cwd: commonConfig.dist.root }
         )
     }

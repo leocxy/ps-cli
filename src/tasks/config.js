@@ -56,6 +56,7 @@ let slateConfig = {
     deployLog: join(config.themeRoot, 'deploy.log'),
     env: argv['env'],
     ignoreFiles: [],
+    theme_id: null,
     cwd: argv['cwd'],
     src: {
         root: 'src/',

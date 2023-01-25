@@ -11,20 +11,8 @@ import deploy_jobs from './build/deploy.js'
 import util_jobs from './build/utils.js'
 
 const { task, series, parallel } = Gulp
-// const tasks = require('./utils')
 
-const test = (cb) => {
-    console.log('test fn')
-    cb()
-}
-
-const test2 = (cb) => {
-    console.log('build fn')
-    cb()
-}
-
-task('test', series(test2, test))
-
+// Watch files and deploy
 task('watch', series(
     config_jobs['validate:id'],
     config_jobs['build:config'],
@@ -41,6 +29,7 @@ task('watch', series(
     ),
 ))
 
+// build files
 task('build', series(
     util_jobs['clean'],
     assets_jobs['build:assets'],
@@ -48,7 +37,7 @@ task('build', series(
     js_jobs['build:js'],
 ))
 
-
+// build & deploy
 task('deploy', series(
     config_jobs['validate:id'],
     util_jobs['clean'],
@@ -58,3 +47,6 @@ task('deploy', series(
     js_jobs['build:js'],
     deploy_jobs['deploy:dist']
 ))
+
+// list all the themes
+task('theme-list', util_jobs['theme-list'])

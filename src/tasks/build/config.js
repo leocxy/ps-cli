@@ -2,6 +2,7 @@ import {readFileSync} from 'fs'
 import {load} from 'js-yaml'
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
+import axios from 'axios'
 import {commonConfig, slateConfig} from '../config.js'
 import {logger} from '../../utils.js'
 import {watch, dest, src} from '../helper.js'
@@ -34,6 +35,24 @@ const checkConfigs = () => {
             return new Promise((resolve, reject) => {
                 if (Object.keys(tkConfig).indexOf(slateConfig.env) === -1) reject(`Environment: ${slateConfig.env} does not exists!`)
                 slateConfig.ignoreFiles = tkConfig[slateConfig.env]?.ignore_files || []
+                if (tkConfig[slateConfig.env].theme_id === 'live') {
+                    return axios.get(
+                        `https://${tkConfig[slateConfig.env]['store']}/admin/api/unstable/themes.json`,
+                        {
+                            timeout: 5000,
+                            headers: {'X-Shopify-Access-Token': tkConfig[slateConfig.env]['password']}
+                        }
+                    ).then(({data}) => {
+                        let live_theme = data?.themes.find(o => o.role === 'main')
+                        if (!live_theme) return reject('Can`t find the production theme from API')
+                        slateConfig.theme_id = live_theme.id
+                        resolve()
+                    }).catch(err => {
+                        logger.error(err)
+                        reject('Can`t fetch themes data from API')
+                    })
+                }
+                slateConfig.theme_id = tkConfig[slateConfig.env].theme_id
                 resolve()
             })
         }).catch(err => {
