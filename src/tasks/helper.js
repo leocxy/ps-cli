@@ -7,6 +7,7 @@ import vinylPaths from 'vinyl-paths'
 import {deleteAsync} from 'del'
 import Debug from "debug";
 import themeKit from '@shopify/themekit'
+import {appendFileSync} from 'fs'
 import {slateConfig, commonConfig} from "./config.js";
 import {logger} from '../utils.js'
 
@@ -75,6 +76,7 @@ class eventCache {
         }, 320)(changeFn, delFn)
     }
 
+    // for deploy.js only
     checkDeployStatus() {
         if (this.active) return
         if (this.change.length) {
@@ -92,6 +94,7 @@ class eventCache {
         }
     }
 
+    // for deploy.js only
     deployFiles(cmd, files) {
         logger.logChildProcess(cmd)
         return new Promise((resolve, reject) => {
@@ -108,21 +111,23 @@ class eventCache {
                 },
                 {cwd: commonConfig.dist.root}
             ).then(() => {
-                logger.logDeploysSuccess(cmd, files)
+                appendFileSync(slateConfig.deployLog, logger.logDeploysSuccess(cmd, files))
                 this.active = false
                 resolve()
             }).catch((err) => {
-                logger.logDeployErrors(cmd, files, err)
+                appendFileSync(slateConfig.deployLog, logger.logDeployErrors(cmd, files, err))
                 this.active = false
                 reject(err)
             })
         })
     }
 
+    // for deploy.js only
     debounceDeploy() {
         debounce(this.checkDeployStatus, 320).bind(this)()
     }
 
+    // for deploy command
     deployDistFolder() {
         return themeKit.command(
             'deploy',

@@ -30,6 +30,7 @@
         "@babel/runtime": "^7.16.7",
         "@shopify/themekit": "^1.1.9",
         "axios": "^1.2.4",
+        "browser-sync": "^2.27.11",
         "chalk": "^5.2.0",
         "chokidar": "^3.5.2",
         "commander": "^10.0.0",

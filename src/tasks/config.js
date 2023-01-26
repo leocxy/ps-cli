@@ -57,6 +57,8 @@ let slateConfig = {
     env: argv['env'],
     ignoreFiles: [],
     theme_id: null,
+    store: null,
+    password: null,
     cwd: argv['cwd'],
     src: {
         root: 'src/',

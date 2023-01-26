@@ -222,14 +222,14 @@ const logger = {
     logDeploysSuccess: (cmd, files) => {
         let timestamp = `Deploy complete @ ${new Date()}. `
         let action = cmd === 'deploy' ? 'added/changed ' : 'removed '
-        let number = +`${files.length} file(s): `
+        let number = `${files.length} file(s): `
         let fileList = `${files.join(', ')} \n`
         return timestamp + action + number + fileList
     },
     logDeployErrors: (cmd, files, err) => {
         let timestamp = `Deploy error @ ${new Date()}. `
         let action = cmd === 'deploy' ? 'added/changed ' : 'removed '
-        let number = +`${files.length} file(s): `
+        let number = `${files.length} file(s): `
         let fileList = `${files.join(', ')} \n`
         return timestamp + action + number + fileList + err + ' \n';
     }

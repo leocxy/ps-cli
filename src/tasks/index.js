@@ -9,6 +9,7 @@ import css_jobs from './build/css.js'
 import js_jobs from './build/js.js'
 import deploy_jobs from './build/deploy.js'
 import util_jobs from './build/utils.js'
+import browser_jobs from './build/browser.js'
 
 const { task, series, parallel } = Gulp
 
@@ -25,7 +26,8 @@ task('watch', series(
         css_jobs['watch:css'],
         js_jobs['watch:js'],
         js_jobs['watch:vendor-js'],
-        deploy_jobs['watch:dist']
+        deploy_jobs['watch:dist'],
+        browser_jobs['sync-reload']
     ),
 ))
 

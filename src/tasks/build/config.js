@@ -35,12 +35,14 @@ const checkConfigs = () => {
             return new Promise((resolve, reject) => {
                 if (Object.keys(tkConfig).indexOf(slateConfig.env) === -1) reject(`Environment: ${slateConfig.env} does not exists!`)
                 slateConfig.ignoreFiles = tkConfig[slateConfig.env]?.ignore_files || []
+                slateConfig.password = tkConfig[slateConfig.env]['password']
+                slateConfig.store = tkConfig[slateConfig.env].store
                 if (tkConfig[slateConfig.env].theme_id === 'live') {
                     return axios.get(
                         `https://${tkConfig[slateConfig.env]['store']}/admin/api/unstable/themes.json`,
                         {
                             timeout: 5000,
-                            headers: {'X-Shopify-Access-Token': tkConfig[slateConfig.env]['password']}
+                            headers: {'X-Shopify-Access-Token': slateConfig.password}
                         }
                     ).then(({data}) => {
                         let live_theme = data?.themes.find(o => o.role === 'main')
