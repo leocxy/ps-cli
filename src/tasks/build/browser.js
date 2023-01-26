@@ -3,6 +3,8 @@ import Debug from 'debug'
 import {join, dirname} from 'path'
 import {readFileSync, writeFileSync} from 'fs'
 import {fileURLToPath} from "url"
+import {logger} from "../../utils.js";
+import {watch} from "../helper.js";
 import {slateConfig} from "../config.js"
 
 const debug = Debug('1')
@@ -40,10 +42,12 @@ const initBrowser = () => {
 }
 
 export default {
-    'sync-init': () => {
-        initBrowser()
-    },
     'sync-reload': () => {
         initBrowser()
+        watch(slateConfig.deployLog, {ignoreInitial: true})
+            .on('all', () => {
+                logger.logTransferDone()
+                browser.reload()
+            })
     }
 }

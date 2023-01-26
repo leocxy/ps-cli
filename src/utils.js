@@ -213,8 +213,8 @@ const logger = {
     plumberErrorHandle: (err) => {
         log(chalk.red(err))
     },
-    deployTo: (environment) => {
-        log('Deploying to', chalk.bold(environment))
+    logTransferDone: () => {
+        log('Transfer Complete:', chalk.green('File changes successfully synced to store'))
     },
     logChildProcess: (cmd) => {
         log('running task', chalk.bold('[child process]'), chalk.white('-'), chalk.cyan('theme', cmd));
