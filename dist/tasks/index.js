@@ -22,7 +22,7 @@ task('watch', series(config_jobs['validate:id'], config_jobs['build:config'], co
 parallel(assets_jobs['watch:assets'], config_jobs['watch:config'], svg_jobs['watch:svg'], css_jobs['watch:css'], js_jobs['watch:js'], js_jobs['watch:vendor-js'], deploy_jobs['watch:dist'], browser_jobs['sync-reload'])));
 
 // build files
-task('build', series(util_jobs['clean'], config_jobs["overwrite:build_process"], assets_jobs['build:assets'], svg_jobs['build:svg'], js_jobs['build:js']));
+task('build', series(util_jobs['clean'], config_jobs["overwrite:build_process"], assets_jobs['build:assets'], css_jobs['build:css'], js_jobs['build:js'], svg_jobs['build:svg']));
 
 // build & deploy
 task('deploy', series(config_jobs['validate:id'], util_jobs['clean'], config_jobs['build:config'], config_jobs["overwrite:build_process"], assets_jobs['build:assets'], svg_jobs['build:svg'], js_jobs['build:js'], deploy_jobs['deploy:dist']));
