@@ -37,19 +37,20 @@ task('build', series(
     util_jobs['clean'],
     config_jobs["overwrite:build_process"],
     assets_jobs['build:assets'],
+    svg_jobs['build:svg'],
     css_jobs['build:css'],
     js_jobs['build:js'],
-    svg_jobs['build:svg'],
 ))
 
 // build & deploy
 task('deploy', series(
     config_jobs['validate:id'],
     util_jobs['clean'],
-    config_jobs['build:config'],
     config_jobs["overwrite:build_process"],
+    config_jobs['build:config'],
     assets_jobs['build:assets'],
     svg_jobs['build:svg'],
+    css_jobs['build:css'],
     js_jobs['build:js'],
     deploy_jobs['deploy:dist']
 ))
