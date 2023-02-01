@@ -15,6 +15,14 @@ import { logger } from "../../utils.js";
  * @private
  */
 const processIcons = files => {
+  // Check Overwrite function
+  let fn = slateConfig.fn?.processIcons || null;
+  if (typeof fn === 'function') {
+    return fn({
+      ...slateConfig,
+      ...commonConfig
+    }, logger, files);
+  }
   logger.processFiles('build:svg');
   return src(files).pipe(plumber(logger.plumberErrorHandle)).pipe(svg(slateConfig.plugins.svgMin)).pipe(extReplace('.liquid')).pipe(size({
     showFiles: true,

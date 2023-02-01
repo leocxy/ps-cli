@@ -16,6 +16,14 @@ import { logger } from "../../utils.js";
  * @private
  */
 const processCss = () => {
+  // Check Overwrite function
+  let fn = slateConfig.fn?.processCss || null;
+  if (typeof fn === 'function') {
+    return fn({
+      ...slateConfig,
+      ...commonConfig
+    }, logger);
+  }
   logger.processFiles('build:css');
   return src(slateConfig.roots.css).pipe(plumber(logger.plumberErrorHandle)).pipe(cssImport()).pipe(extReplace('.css.liquid', '.css')).pipe(extReplace('.scss.liquid', '.scss')).pipe(dest(commonConfig.dist.assets));
 };

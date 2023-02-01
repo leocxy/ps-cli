@@ -22,8 +22,9 @@ const isMatch = pm(slateConfig.src.js)
  */
 const processThemeJs = () => {
     // Check Overwrite function
-    if (slateConfig.fn?.processThemeJs !== undefined && typeof(slateConfig.fn.processThemeJs) === 'function') {
-        return slateConfig.fn.processThemeJs({...slateConfig, ...commonConfig}, logger)
+    let fn = slateConfig.fn?.processThemeJs || null
+    if (typeof(fn) === 'function') {
+        return fn({...slateConfig, ...commonConfig}, logger)
     }
     logger.processFiles('build:js')
     return src([slateConfig.roots.js, `!${slateConfig.roots.vendorJs}`])
