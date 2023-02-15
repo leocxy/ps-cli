@@ -40,6 +40,7 @@ task('build', series(
     svg_jobs['build:svg'],
     css_jobs['build:css'],
     js_jobs['build:js'],
+    js_jobs['build:vendor-js'],
 ))
 
 // build & deploy
@@ -52,6 +53,7 @@ task('deploy', series(
     svg_jobs['build:svg'],
     css_jobs['build:css'],
     js_jobs['build:js'],
+    js_jobs['build:vendor-js'],
     deploy_jobs['deploy:dist']
 ))
 

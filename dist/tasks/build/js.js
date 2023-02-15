@@ -74,7 +74,7 @@ export default {
     });
   },
   'build:vendor-js': () => {
-    processVendorJs();
+    return processVendorJs();
   },
   'watch:vendor-js': () => {
     watch([slateConfig.roots.vendorJs, slateConfig.src.vendorJs], {
