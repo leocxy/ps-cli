@@ -30,7 +30,7 @@ const processThemeJs = () => {
   logger.processFiles('build:js');
   return src([slateConfig.roots.js, `!${slateConfig.roots.vendorJs}`]).pipe(plumber(logger.plumberErrorHandle)).pipe(sourceMap.init({})).pipe(babel({
     plugins: slateConfig.plugins.babel
-  })).pipe(uglify(slateConfig.plugins.uglify.theme)).pipe(include()).pipe(sourceMap.write()).pipe(dest(commonConfig.dist.assets));
+  })).pipe(include()).pipe(uglify(slateConfig.plugins.uglify.theme)).pipe(sourceMap.write()).pipe(dest(commonConfig.dist.assets));
 };
 
 /**

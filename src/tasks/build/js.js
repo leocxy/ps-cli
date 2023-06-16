@@ -31,8 +31,8 @@ const processThemeJs = () => {
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(sourceMap.init({}))
         .pipe(babel({plugins: slateConfig.plugins.babel}))
-        .pipe(uglify(slateConfig.plugins.uglify.theme))
         .pipe(include())
+        .pipe(uglify(slateConfig.plugins.uglify.theme))
         .pipe(sourceMap.write())
         .pipe(dest(commonConfig.dist.assets))
 }
