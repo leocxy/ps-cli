@@ -1,8 +1,10 @@
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
+// import {obj as throught} from 'through2'
 import { eventInstance, deleteFiles, watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
 import { logger } from "../../utils.js"
+
 
 const assetPaths = [
     slateConfig.src.assets,
@@ -26,6 +28,10 @@ const assetPaths = [
 
     return src(files, { base: slateConfig.src.root })
         .pipe(plumber(logger.plumberErrorHandle))
+        // .pipe(throught(function (file, _, cb) {
+        //     if (file.path.slice(-5) !== '.json') return cb(null, file)
+        //     return json_validate({ allowDuplicatedKeys: true })(file, _, cb)
+        // }))
         .pipe(size({showFiles: true}))
         .pipe(dest(commonConfig.dist.root))
 }

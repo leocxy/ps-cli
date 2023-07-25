@@ -73,7 +73,7 @@ let slateConfig = {
     icons: 'src/icons/**/*.svg',
     templates: 'src/templates/**/*.{liquid,json}',
     snippets: 'src/snippets/*.liquid',
-    sections: 'src/sections/*.liquid',
+    sections: 'src/sections/*.{liquid,json}',
     locales: 'src/locales/*.json',
     config: 'src/config/*.json',
     layout: 'src/layout/*.liquid'
