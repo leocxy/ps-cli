@@ -1,8 +1,8 @@
 import plumber from 'gulp-plumber';
 import include from 'gulp-include';
 import babel from 'gulp-babel';
-import uglify from 'gulp-uglify';
-import sourceMap from 'gulp-sourcemaps';
+// import uglify from 'gulp-uglify'
+// import sourceMap from 'gulp-sourcemaps'
 import pm from 'picomatch';
 import { eventInstance, deleteFiles, watch, src, dest } from "../helper.js";
 import { slateConfig, commonConfig } from '../config.js';
@@ -28,9 +28,14 @@ const processThemeJs = () => {
     }, logger);
   }
   logger.processFiles('build:js');
-  return src([slateConfig.roots.js, `!${slateConfig.roots.vendorJs}`]).pipe(plumber(logger.plumberErrorHandle)).pipe(sourceMap.init({})).pipe(babel({
+  return src([slateConfig.roots.js, `!${slateConfig.roots.vendorJs}`]).pipe(plumber(logger.plumberErrorHandle))
+  // .pipe(sourceMap.init({}))
+  .pipe(babel({
     plugins: slateConfig.plugins.babel
-  })).pipe(include()).pipe(uglify(slateConfig.plugins.uglify.theme)).pipe(sourceMap.write()).pipe(dest(commonConfig.dist.assets));
+  })).pipe(include())
+  // .pipe(uglify(slateConfig.plugins.uglify.theme))
+  // .pipe(sourceMap.write())
+  .pipe(dest(commonConfig.dist.assets));
 };
 
 /**
@@ -49,7 +54,9 @@ const processVendorJs = () => {
     }, logger);
   }
   logger.processFiles('build:vendor-js');
-  return src(slateConfig.roots.vendorJs).pipe(plumber(logger.plumberErrorHandle)).pipe(include()).pipe(uglify(slateConfig.plugins.uglify.vendor)).pipe(dest(commonConfig.dist.assets));
+  return src(slateConfig.roots.vendorJs).pipe(plumber(logger.plumberErrorHandle)).pipe(include())
+  // .pipe(uglify(slateConfig.plugins.uglify.vendor))
+  .pipe(dest(commonConfig.dist.assets));
 };
 const removeJs = files => {
   logger.processFiles('remove:js');

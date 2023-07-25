@@ -1,6 +1,5 @@
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
-import svg from 'gulp-svgmin'
 import extReplace from 'gulp-ext-replace'
 import { eventInstance, deleteFiles, watch, src, dest } from "../helper.js"
 import { slateConfig, commonConfig } from '../config.js'
@@ -23,7 +22,6 @@ import { logger } from "../../utils.js"
     logger.processFiles('build:svg')
     return src(files)
         .pipe(plumber(logger.plumberErrorHandle))
-        .pipe(svg(slateConfig.plugins.svgMin))
         .pipe(extReplace('.liquid'))
         .pipe(size({showFiles: true, pretty: true}))
         .pipe(dest(commonConfig.dist.snippets))
