@@ -69,7 +69,7 @@ export default {
     return processThemeJs();
   },
   'watch:js': () => {
-    watch([slateConfig.roots.js, `!${slateConfig.roots.vendorJs}`, `!${slateConfig.src.vendorJs}`], {
+    watch([slateConfig.src.js, `!${slateConfig.roots.vendorJs}`, `!${slateConfig.src.vendorJs}`], {
       ignoreInitial: true
     }).on('all', (event, path) => {
       logger.fileEvent(event, path);

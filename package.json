@@ -1,6 +1,6 @@
 {
     "name": "@leocxy/ps-cli",
-    "version": "0.14.1",
+    "version": "0.15.9",
     "description": "Refactory Shopify Old Slate",
     "type": "module",
     "main": "dist/index.js",
@@ -11,7 +11,7 @@
     "license": "MIT",
     "engineStrict": true,
     "engines": {
-        "node": "^14.17.0 || >=16.0.0",
+        "node": ">=16.0.0",
         "yarn": "1.x"
     },
     "keywords": [
