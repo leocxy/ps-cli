@@ -81,7 +81,7 @@ let slateConfig = {
     roots: {
         js: 'src/scripts/*.{js,js.liquid}',
         vendorJs: 'src/scripts/vendor.js',
-        css: 'src/styles/*.{css,scss}'
+        css: 'src/styles/*.{css,scss,scss.liquid}',
     },
     plugins: {
         svgMin: {multipass: true},

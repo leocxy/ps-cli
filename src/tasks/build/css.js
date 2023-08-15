@@ -4,9 +4,9 @@ import extReplace from 'gulp-ext-replace'
 import {watch, src, dest} from "../helper.js"
 import {slateConfig, commonConfig} from '../config.js'
 import {logger} from "../../utils.js"
-// import dartSass from 'sass'
-// import gulpSass from 'gulp-sass'
-// const sass = gulpSass(dartSass)
+import dartSass from 'sass'
+import gulpSass from 'gulp-sass'
+const sass = gulpSass(dartSass)
 
 
 /**
@@ -26,8 +26,8 @@ const processCss = () => {
     return src(slateConfig.roots.css)
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(cssImport())
-        .pipe(extReplace('.css.liquid', '.css'))
-        .pipe(extReplace('.scss.liquid', '.scss'))
+        .pipe(sass().on('error', sass.logError))
+        .pipe(extReplace('.css.liquid', '.scss.css'))
         .pipe(dest(commonConfig.dist.assets))
 }
 
