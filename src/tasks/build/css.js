@@ -27,7 +27,8 @@ const processCss = () => {
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(cssImport())
         .pipe(sass().on('error', sass.logError))
-        .pipe(extReplace('.css.liquid', '.scss.css'))
+        .pipe(extReplace('.css.liquid', '.scss.liquid'))
+        .pipe(extReplace('.css', '.scss'))
         .pipe(dest(commonConfig.dist.assets))
 }
 

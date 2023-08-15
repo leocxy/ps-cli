@@ -25,7 +25,7 @@ const processCss = () => {
     }, logger);
   }
   logger.processFiles('build:css');
-  return src(slateConfig.roots.css).pipe(plumber(logger.plumberErrorHandle)).pipe(cssImport()).pipe(sass().on('error', sass.logError)).pipe(extReplace('.css.liquid', '.scss.css')).pipe(dest(commonConfig.dist.assets));
+  return src(slateConfig.roots.css).pipe(plumber(logger.plumberErrorHandle)).pipe(cssImport()).pipe(sass().on('error', sass.logError)).pipe(extReplace('.css.liquid', '.scss.liquid')).pipe(extReplace('.css', '.scss')).pipe(dest(commonConfig.dist.assets));
 };
 export default {
   /**
