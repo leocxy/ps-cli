@@ -24,8 +24,15 @@ const processCss = () => {
       ...commonConfig
     }, logger);
   }
+  /**
+   * @note
+   * sass() -> will change the file extension to .css
+   * 1. x.scss -> x.css
+   * 2. x.scss.liquid -> x.scss.css
+   * Therefore, we need to replace the extension back to .css.liquid
+   */
   logger.processFiles('build:css');
-  return src(slateConfig.roots.css).pipe(plumber(logger.plumberErrorHandle)).pipe(cssImport()).pipe(sass().on('error', sass.logError)).pipe(extReplace('.css.liquid', '.scss.liquid')).pipe(extReplace('.css', '.scss')).pipe(dest(commonConfig.dist.assets));
+  return src(slateConfig.roots.css).pipe(plumber(logger.plumberErrorHandle)).pipe(cssImport()).pipe(sass().on('error', sass.logError)).pipe(extReplace('.css.liquid', '.scss.css')).pipe(dest(commonConfig.dist.assets));
 };
 export default {
   /**
