@@ -4,7 +4,7 @@ import extReplace from 'gulp-ext-replace'
 import {watch, src, dest} from "../helper.js"
 import {slateConfig, commonConfig} from '../config.js'
 import {logger} from "../../utils.js"
-import dartSass from 'sass'
+import * as dartSass from 'sass'
 import gulpSass from 'gulp-sass'
 const sass = gulpSass(dartSass)
 
