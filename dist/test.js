@@ -1,5 +1,4 @@
-import themeKit from '@shopify/themekit';
-import { slateConfig, commonConfig } from "./tasks/config.js";
+import { commonConfig } from "./tasks/config.js";
 import axios from 'axios';
 import { readFileSync } from "fs";
 import { load } from "js-yaml";

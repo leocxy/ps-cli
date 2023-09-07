@@ -7,7 +7,7 @@ export default function (cli) {
     debug(`--gulpfile ${config.gulpFile}`);
     debug(`--cwd ${config.themeRoot}`);
     debug(options);
-    spawn(config.gulp, ['watch', '--gulpfile', config.gulpFile, '--cwd', config.themeRoot, '--env', options.env], {
+    spawn(config.gulp, ['watch', '--gulpfile', config.gulpFile, '--cwd', config.themeRoot, '--env', options.env, '--dir', options.dir], {
       stdio: 'inherit'
     });
   });

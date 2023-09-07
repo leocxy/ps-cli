@@ -15,7 +15,7 @@ export default function (cli) {
             debug(options)
 
             spawn(config.gulp, [
-                'theme-list',
+                'list',
                 '--gulpfile', config.gulpFile,
                 '--cwd', config.themeRoot,
                 '--env', options.env], {stdio: 'inherit'})

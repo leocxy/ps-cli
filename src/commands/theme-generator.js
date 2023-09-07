@@ -9,7 +9,7 @@ const {prompt} = Enquirer
 export default function (cli) {
     cli.command('generate [name]')
         .description("Generates a new theme directory containing Slate's theme boilerplate.")
-        .option('--npm', 'install theme dependencies with npm instaed of npm')
+        .option('--npm', 'install theme dependencies with npm instead of npm')
         .action(async (name, options = {}) => {
             let dirName = name
             if (!dirName) {

@@ -18,6 +18,8 @@ export default function (cli) {
                 'watch',
                 '--gulpfile', config.gulpFile,
                 '--cwd', config.themeRoot,
-                '--env', options.env], {stdio: 'inherit'})
+                '--env', options.env,
+                '--dir', options.dir,
+            ], {stdio: 'inherit'})
         })
 }

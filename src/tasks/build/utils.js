@@ -7,10 +7,16 @@ export default {
     'clean': () => {
         return deleteAsync(commonConfig.dist.root)
     },
-    'theme-list': () => {
+    'list': () => {
         return themeKit.command(
             'get',
             {env: slateConfig.env, 'list': true}
+        )
+    },
+    'download': () => {
+        return themeKit.command(
+            'download',
+            {env: slateConfig.env, dir: slateConfig.dir}
         )
     }
 }

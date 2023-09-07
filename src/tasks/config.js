@@ -55,12 +55,13 @@ let commonConfig = {
 let slateConfig = {
     deployLog: join(config.themeRoot, 'deploy.log'),
     env: argv['env'],
+    cwd: argv['cwd'],
+    dir: argv['dir'],
     ignoreFiles: [],
     theme_id: null,
     store: null,
     password: null,
     fn: {},
-    cwd: argv['cwd'],
     src: {
         root: 'src/',
         js: 'src/scripts/**/*.{js,js.liquid}',

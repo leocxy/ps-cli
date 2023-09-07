@@ -28,4 +28,7 @@ task('build', series(util_jobs['clean'], config_jobs["overwrite:build_process"],
 task('deploy', series(config_jobs['validate:id'], util_jobs['clean'], config_jobs["overwrite:build_process"], config_jobs['build:config'], assets_jobs['build:assets'], svg_jobs['build:svg'], css_jobs['build:css'], js_jobs['build:js'], js_jobs['build:vendor-js'], deploy_jobs['deploy:dist']));
 
 // list all the themes
-task('theme-list', util_jobs['theme-list']);
+task('list', util_jobs['list']);
+
+// download the theme
+task('download', util_jobs['download']);
