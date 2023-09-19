@@ -54,9 +54,9 @@ const processVendorJs = () => {
     }, logger);
   }
   logger.processFiles('build:vendor-js');
-  return src(slateConfig.roots.vendorJs).pipe(plumber(logger.plumberErrorHandle)).pipe(include())
-  // .pipe(uglify(slateConfig.plugins.uglify.vendor))
-  .pipe(dest(commonConfig.dist.assets));
+  return src(slateConfig.roots.vendorJs, {
+    allowEmpty: true
+  }).pipe(plumber(logger.plumberErrorHandle)).pipe(include()).pipe(dest(commonConfig.dist.assets));
 };
 const removeJs = files => {
   logger.processFiles('remove:js');

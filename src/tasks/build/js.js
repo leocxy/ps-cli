@@ -50,10 +50,9 @@ const processVendorJs = () => {
         return slateConfig.fn.processVendorJs({...slateConfig, ...commonConfig}, logger)
     }
     logger.processFiles('build:vendor-js')
-    return src(slateConfig.roots.vendorJs)
+    return src(slateConfig.roots.vendorJs, {allowEmpty: true})
         .pipe(plumber(logger.plumberErrorHandle))
         .pipe(include())
-        // .pipe(uglify(slateConfig.plugins.uglify.vendor))
         .pipe(dest(commonConfig.dist.assets))
 }
 
