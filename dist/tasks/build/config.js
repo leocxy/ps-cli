@@ -3,7 +3,6 @@ import { join } from 'path';
 import { load } from 'js-yaml';
 import plumber from 'gulp-plumber';
 import size from 'gulp-size';
-import axios from 'axios';
 import { commonConfig, slateConfig } from '../config.js';
 import { logger, config } from '../../utils.js';
 import { watch, dest, src } from '../helper.js';
@@ -16,7 +15,8 @@ import { watch, dest, src } from '../helper.js';
  */
 const validateId = settings => {
   return new Promise((resolve, reject) => {
-    if (settings.theme_id === 'live') resolve();
+    // You can`t use `Theme Access` password as Admin API token
+    // if (settings.theme_id === 'live') resolve()
     const id = Number(settings.theme_id);
     isNaN(id) ? reject(settings) : resolve();
   });
@@ -38,24 +38,24 @@ const checkConfigs = () => {
         slateConfig.ignoreFiles = tkConfig[slateConfig.env]?.ignore_files || [];
         slateConfig.password = tkConfig[slateConfig.env]['password'];
         slateConfig.store = tkConfig[slateConfig.env].store;
-        if (tkConfig[slateConfig.env].theme_id === 'live') {
-          return axios.get(`https://${tkConfig[slateConfig.env]['store']}/admin/api/unstable/themes.json`, {
-            timeout: 5000,
-            headers: {
-              'X-Shopify-Access-Token': slateConfig.password
-            }
-          }).then(({
-            data
-          }) => {
-            let live_theme = data?.themes.find(o => o.role === 'main');
-            if (!live_theme) return reject('Can`t find the production theme from API');
-            slateConfig.theme_id = live_theme.id;
-            resolve();
-          }).catch(err => {
-            logger.error(err);
-            reject('Can`t fetch themes data from API');
-          });
-        }
+        // You can`t use `Theme Access` password as Admin API token
+        // if (tkConfig[slateConfig.env].theme_id === 'live') {
+        //     return axios.get(
+        //         `https://${tkConfig[slateConfig.env]['store']}/admin/api/unstable/themes.json`,
+        //         {
+        //             timeout: 5000,
+        //             headers: {'X-Shopify-Access-Token': slateConfig.password}
+        //         }
+        //     ).then(({data}) => {
+        //         let live_theme = data?.themes.find(o => o.role === 'main')
+        //         if (!live_theme) return reject('Can`t find the production theme from API')
+        //         slateConfig.theme_id = live_theme.id
+        //         resolve()
+        //     }).catch(err => {
+        //         logger.error(err)
+        //         reject('Can`t fetch themes data from API')
+        //     })
+        // }
         slateConfig.theme_id = tkConfig[slateConfig.env].theme_id;
         resolve();
       });

@@ -38,7 +38,7 @@ import cli_watch from './commands/watch.js'
 import cli_build from './commands/build.js'
 import cli_deploy from './commands/deploy.js'
 import cli_list from './commands/list.js'
-import cli_download from './commands/download.js'
+import cli_pull from './commands/pull.js'
 
 
 cli_generator(cli)
@@ -47,7 +47,7 @@ cli_watch(cli)
 cli_build(cli)
 cli_deploy(cli)
 cli_list(cli)
-cli_download(cli)
+cli_pull(cli)
 
 // @todo update
 cli.addHelpText('before', () => outputSlateThemeCheck(false))

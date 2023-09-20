@@ -31,4 +31,4 @@ task('deploy', series(config_jobs['validate:id'], util_jobs['clean'], config_job
 task('list', util_jobs['list']);
 
 // download the theme
-task('download', util_jobs['download']);
+task('pull', util_jobs['pull']);

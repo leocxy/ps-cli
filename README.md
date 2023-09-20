@@ -16,6 +16,8 @@ Refactored Shopify Slate(0.14.0), so we can still use it on M2 Chip or other lat
 ```
 
 # Change Logs
+0.16.7 -> `live` will not consider as a valid `theme_id` anymore. (config.yml)
+
 0.16.6 → Fixed “scripts/vendor.js” does not exist will raise an error issue
 
 0.16.5 → Add “download” command

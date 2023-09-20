@@ -11,7 +11,7 @@ export default {
       'list': true
     });
   },
-  'download': () => {
+  'pull': () => {
     return themeKit.command('download', {
       env: slateConfig.env,
       dir: slateConfig.dir

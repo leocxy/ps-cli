@@ -5,8 +5,8 @@ import {config} from '../utils.js'
 const debug = Debug('1')
 
 export default function (cli) {
-    cli.command('download')
-        .alias('dd')
+    cli.command('pull')
+        .alias('p')
         .description('Downloads the theme from your Shopify store.')
         .option('-e, --env <environment>', 'Shopify store to download theme from (specified in config.yml - default: development)', 'development')
         .option('-d, --dir <directory>', 'Directory to download theme to (default: ./)', './')
@@ -16,7 +16,7 @@ export default function (cli) {
             debug(options)
 
             spawn(config.gulp, [
-                'download',
+                'pull',
                 '--gulpfile', config.gulpFile,
                 '--cwd', config.themeRoot,
                 '--dir', options.dir,

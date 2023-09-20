@@ -61,4 +61,4 @@ task('deploy', series(
 task('list', util_jobs['list'])
 
 // download the theme
-task('download', util_jobs['download'])
+task('pull', util_jobs['pull'])

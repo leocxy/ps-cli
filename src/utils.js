@@ -205,7 +205,7 @@ const logger = {
         log('File missing:', chalk.yellow('`config.yml` does not exist. You need to add a config file before you can make changes to your Shopify store.'))
     },
     invalidThemeId: (themeId, env) => {
-        log('Invalid theme id for', chalk.cyan(`Environment[${env}]:${themeId}`), chalk.yellow('`theme_id` must be an integer or "live".'))
+        log('Invalid theme id for', chalk.cyan(`Environment[${env}]:${themeId}`), chalk.yellow('`theme_id` must be an integer.'))
     },
     processFiles: (processName) => {
         log('running task', chalk.white('-'), chalk.cyan(processName))
