@@ -1,72 +1,81 @@
 {
-    "name": "@leocxy/ps-cli",
-    "version": "0.16.3",
-    "description": "Refactory Shopify Old Slate",
-    "type": "module",
-    "main": "dist/index.js",
-    "bin": {
-        "slate": "dist/index.js"
-    },
-    "author": "Leo Chen <leo.cxy88@gmail.com>",
-    "license": "MIT",
-    "engineStrict": true,
-    "engines": {
-        "node": ">=16.0.0",
-        "yarn": "1.x"
-    },
-    "keywords": [
-        "shopify",
-        "slate",
-        "old slate"
-    ],
-    "devDependencies": {
-        "eslint": "^8.0.0",
-        "eslint-plugin-node": "^11.1.0"
-    },
-    "dependencies": {
-        "@babel/cli": "^7.15.7",
-        "@babel/core": "^7.15.8",
-        "@babel/plugin-transform-runtime": "^7.16.10",
-        "@babel/runtime": "^7.16.7",
-        "@shopify/themekit": "^1.1.9",
-        "browser-sync": "^2.27.11",
-        "chalk": "^5.2.0",
-        "chokidar": "^3.5.2",
-        "commander": "^11.0.0",
-        "cross-spawn": "^7.0.3",
-        "debug": "^4.3.2",
-        "del": "^7.0.0",
-        "enquirer": "^2.3.6",
-        "esm": "^3.2.25",
-        "fancy-log": "^2.0.0",
-        "figures": "^5.0.0",
-        "find-root": "^1.1.0",
-        "gulp": "^4.0.2",
-        "gulp-babel": "^8.0.0",
-        "gulp-cssimport": "^7.0.0",
-        "gulp-ext-replace": "^0.3.0",
-        "gulp-include": "^2.4.1",
-        "gulp-plumber": "^1.2.1",
-        "gulp-sass": "^5.1.0",
-        "gulp-size": "^4.0.1",
-        "gulp-sourcemaps": "^3.0.0",
-        "gulp-svgmin": "^4.1.0",
-        "gulp-uglify": "^3.0.2",
-        "js-yaml": "^4.1.0",
-        "lodash.debounce": "^4.0.8",
-        "mv": "^2.1.1",
-        "rimraf": "^5.0.1",
-        "sass": "^1.65.1",
-        "unzip-stream": "^0.3.1",
-        "update-notifier": "^6.0.2",
-        "vinyl-paths": "^5.0.0",
-        "webpack-merge": "^5.8.0",
-        "yargs": "^17.2.1"
-    },
-    "scripts": {
-        "clean": "yarn rimraf dist/",
-        "lint": "yarn eslint --max-warnings 0 src/",
-        "serve": "yarn clean && yarn babel -w -d dist/ src/",
-        "build": "yarn clean && yarn babel -d dist/ src/ -x .js && yarn babel -d dist/ src/ -x .mjs --out-file-extension .mjs"
-    }
+  "name": "@leocxy/ps-cli",
+  "version": "0.16.8",
+  "description": "Refactored Shopify Slate from 0.14.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "slate": "dist/index.js"
+  },
+  "author": "Leo Chen <leo.cxy88@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leocxy/ps-cli/issues"
+  },
+  "homepage": "https://github.com/leocxy/ps-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leocxy/ps-cli.git"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=16.0.0",
+    "yarn": "1.x"
+  },
+  "keywords": [
+    "shopify",
+    "slate",
+    "themekit"
+  ],
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-plugin-node": "^11.1.0"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/plugin-transform-runtime": "^7.16.10",
+    "@babel/runtime": "^7.16.7",
+    "@shopify/themekit": "^1.1.9",
+    "browser-sync": "^2.27.11",
+    "chalk": "^5.2.0",
+    "chokidar": "^3.5.2",
+    "commander": "^11.0.0",
+    "cross-spawn": "^7.0.3",
+    "debug": "^4.3.2",
+    "del": "^7.0.0",
+    "enquirer": "^2.3.6",
+    "esm": "^3.2.25",
+    "fancy-log": "^2.0.0",
+    "figures": "^5.0.0",
+    "find-root": "^1.1.0",
+    "glob-watcher": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-cssimport": "^7.0.0",
+    "gulp-ext-replace": "^0.3.0",
+    "gulp-include": "^2.4.1",
+    "gulp-plumber": "^1.2.1",
+    "gulp-sass": "^5.1.0",
+    "gulp-size": "^4.0.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-svgmin": "^4.1.0",
+    "gulp-uglify": "^3.0.2",
+    "js-yaml": "^4.1.0",
+    "lodash.debounce": "^4.0.8",
+    "mv": "^2.1.1",
+    "rimraf": "^5.0.1",
+    "sass": "^1.65.1",
+    "unzip-stream": "^0.3.1",
+    "update-notifier": "^6.0.2",
+    "vinyl-paths": "^5.0.0",
+    "webpack-merge": "^5.8.0",
+    "yargs": "^17.2.1"
+  },
+  "scripts": {
+    "clean": "yarn rimraf dist/",
+    "lint": "yarn eslint --max-warnings 0 src/",
+    "serve": "yarn clean && yarn babel -w -d dist/ src/",
+    "build": "yarn clean && yarn babel -d dist/ src/ -x .js && yarn babel -d dist/ src/ -x .mjs --out-file-extension .mjs"
+  }
 }

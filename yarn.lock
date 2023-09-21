@@ -750,6 +750,15 @@ async-done@^1.2.0, async-done@^1.2.2:
     process-nextick-args "^2.0.0"
     stream-exhaust "^1.0.1"
 
+async-done@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/async-done/-/async-done-2.0.0.tgz#f1ec5df738c6383a52b0a30d0902fd897329c15a"
+  integrity sha512-j0s3bzYq9yKIVLKGE/tWlCpa3PfFLcrDZLTSVdnnCTGagXuXBJO4SsY9Xdk/fQBirCkH4evW5xOeJXqlAQFdsw==
+  dependencies:
+    end-of-stream "^1.4.4"
+    once "^1.4.0"
+    stream-exhaust "^1.0.2"
+
 async-each-series@0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/async-each-series/-/async-each-series-0.1.1.tgz#7617c1917401fd8ca4a28aadce3dbae98afeb432"
@@ -1239,7 +1248,7 @@ chalk@^5.0.1, chalk@^5.2.0:
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.3.0.tgz#67c20a7ebef70e7f3970a01f90fa210cb6860385"
   integrity sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==
 
-"chokidar@>=3.0.0 <4.0.0", chokidar@^3.4.0, chokidar@^3.5.1, chokidar@^3.5.2:
+"chokidar@>=3.0.0 <4.0.0", chokidar@^3.4.0, chokidar@^3.5.1, chokidar@^3.5.2, chokidar@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
   integrity sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==
@@ -2010,7 +2019,7 @@ encodeurl@~1.0.1, encodeurl@~1.0.2:
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
   integrity sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==
 
-end-of-stream@^1.0.0, end-of-stream@^1.1.0:
+end-of-stream@^1.0.0, end-of-stream@^1.1.0, end-of-stream@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.4.4.tgz#5ae64a5f45057baf3626ec14da0ca5e4b2431eb0"
   integrity sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==
@@ -2862,6 +2871,14 @@ glob-watcher@^5.0.3:
     just-debounce "^1.0.0"
     normalize-path "^3.0.0"
     object.defaults "^1.1.0"
+
+glob-watcher@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/glob-watcher/-/glob-watcher-6.0.0.tgz#8565341978a92233fb3881b8857b4d1e9c6bf080"
+  integrity sha512-wGM28Ehmcnk2NqRORXFOTOR064L4imSw3EeOqU5bIwUf62eXGwg89WivH6VMahL8zlQHeodzvHpXplrqzrz3Nw==
+  dependencies:
+    async-done "^2.0.0"
+    chokidar "^3.5.3"
 
 glob@^10.2.5:
   version "10.3.4"
@@ -5657,7 +5674,7 @@ stream-counter@^1.0.0:
   resolved "https://registry.yarnpkg.com/stream-counter/-/stream-counter-1.0.0.tgz#91cf2569ce4dc5061febcd7acb26394a5a114751"
   integrity sha512-4nfHc1016AhNOs0CFDR3S0FNeqnYbT7xZ408coajcx2Msj8malNNjvFHzWYIfIAXNK5i0eaKIVfgBYPOkyOTIg==
 
-stream-exhaust@^1.0.1:
+stream-exhaust@^1.0.1, stream-exhaust@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/stream-exhaust/-/stream-exhaust-1.0.2.tgz#acdac8da59ef2bc1e17a2c0ccf6c320d120e555d"
   integrity sha512-b/qaq/GlBK5xaq1yrK9/zFcyRSTNxmcZwFLGSTG0mXgZl/4Z6GgiyYOXOvY7N3eEvFRAG1bkDRz5EPGSvPYQlw==
