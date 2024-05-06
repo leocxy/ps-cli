@@ -1,6 +1,6 @@
 {
   "name": "@leocxy/ps-cli",
-  "version": "0.16.8",
+  "version": "0.16.9",
   "description": "Refactored Shopify Slate from 0.14.0",
   "type": "module",
   "main": "dist/index.js",
@@ -36,6 +36,7 @@
     "@babel/core": "^7.15.8",
     "@babel/plugin-transform-runtime": "^7.16.10",
     "@babel/runtime": "^7.16.7",
+    "@leocxy/ps-cli": "^0.16.8",
     "@shopify/themekit": "^1.1.9",
     "browser-sync": "^2.27.11",
     "chalk": "^5.2.0",

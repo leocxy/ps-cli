@@ -147,6 +147,8 @@ warning Error running install script for optional dependency: "/xx/xxx/node_modu
 
 ## Change Logs
 
+0.16.9 -> Bump up the dependencies
+
 0.16.8 → Updated dependencies, and update the `README.md` 
 
 0.16.7 → `live` will not consider as a valid `theme_id` anymore. (config.yml)
