@@ -1,3 +1,7 @@
 .idea
 node_modules
 .DS_Store
+
+# inject files -> overwrite build process
+dist/fn.js
+src/fn.js

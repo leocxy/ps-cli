@@ -146,6 +146,7 @@ warning Error running install script for optional dependency: "/xx/xxx/node_modu
 ```
 
 ## Change Logs
+0.16.10 -> Fixed Windows compatibility issues.
 
 0.16.9 -> Bump up the dependencies
 

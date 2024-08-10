@@ -3,6 +3,8 @@ import {join} from 'path'
 import {load} from 'js-yaml'
 import plumber from 'gulp-plumber'
 import size from 'gulp-size'
+import { type as os_type } from 'os'
+import { pathToFileURL } from 'url'
 import {commonConfig, slateConfig} from '../config.js'
 import {logger,config} from '../../utils.js'
 import {watch, dest, src} from '../helper.js'
@@ -134,13 +136,23 @@ export default {
         })
     },
     "overwrite:build_process": () => {
+        const windows = os_type() === 'Windows_NT'
         let content = ''
-        let file = ['overwrite/fn.js', 'slate.overwrite.js'].find(f => existsSync(join(config.themeRoot, f)))
-        if (file) content = readFileSync(join(config.themeRoot, file))
+        let file = ['overwrite/fn.js', 'slate.overwrite.js'].find(f => {
+            let file_path = join(config.themeRoot, f)
+            if (windows) file_path = pathToFileURL(file_path)
+            return existsSync(file_path)
+        })
+        if (file) {
+            content = join(config.themeRoot, file)
+            if (windows) content = pathToFileURL(content)
+            content = readFileSync(content)
+        }
         let file_path = join(config.currentDirectory, 'fn.js')
         writeFileSync(file_path, content)
+
         return new Promise((resolve, reject) => {
-            import(file_path).then(v => {
+            import(windows ? pathToFileURL(file_path) : file_path).then(v => {
                 slateConfig.fn = v.default
                 resolve()
             }).catch(err => {
