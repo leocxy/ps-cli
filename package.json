@@ -1,6 +1,6 @@
 {
   "name": "@leocxy/ps-cli",
-  "version": "0.16.9",
+  "version": "0.16.10",
   "description": "Refactored Shopify Slate from 0.14.0",
   "type": "module",
   "main": "dist/index.js",
